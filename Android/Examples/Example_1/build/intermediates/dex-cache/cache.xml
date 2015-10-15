@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/classes-4944d4acd46748b1783b1b096ccccd082e468a4e.jar" />
+    </item>
+    <item
+        jar="/Users/ian/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.5/6b262da268f8ad9eff941b25503a9198f0a0ac93/slf4j-api-1.7.5.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="6b262da268f8ad9eff941b25503a9198f0a0ac93">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/slf4j-api-1.7.5-2f88d5331961b44acaba44e868549472737e0f27.jar" />
+    </item>
+    <item
+        jar="/Users/ian/.gradle/caches/modules-2/files-2.1/com.loopj.android/android-async-http/1.4.7/cd78109020f9ec803ef4e652c17ee4615b03e20a/android-async-http-1.4.7.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="cd78109020f9ec803ef4e652c17ee4615b03e20a">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.7-69f0c108a400e5277dbda152ad0e42015d5dd4b9.jar" />
+    </item>
+    <item
+        jar="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/classes-df4835489e9ca07f6c969d89752ccccce28e2890.jar" />
+    </item>
+    <item
+        jar="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/exploded-aar/pexkit-android-example/pexkit/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ecfec82fbdfd0ac4a7427645ab0e1d05ace57d63">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/classes-c06aba1f9d413e712ccd1e3f9c930106079e918e.jar" />
+    </item>
+    <item
+        jar="/Users/ian/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-03c0b25483d0ced1c6490a08e7548cd315be097b.jar" />
+    </item>
+    <item
+        jar="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/exploded-aar/pexkit-android-example/pexkit/unspecified/jars/libs/json-simple-1.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="5d6f9b6a9ddca2a28c0216cc44efb2e20d9c23b5">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/json-simple-1.1.1-c128e98da54d5892c0156bceb1261de5e41a6b40.jar" />
+    </item>
+    <item
+        jar="/Users/ian/.gradle/caches/modules-2/files-2.1/dnsjava/dnsjava/2.1.7/a1ed0a251d22bf528cebfafb94c55e6f3f339cf/dnsjava-2.1.7.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="0a1ed0a251d22bf528cebfafb94c55e6f3f339cf">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/dnsjava-2.1.7-aaf9d022cf0b1185a77b38f7b659c5f70bec5f15.jar" />
+    </item>
+    <item
+        jar="/Users/ian/.gradle/caches/modules-2/files-2.1/com.spotify/dns/3.0.2/73271f129d61641179a13c0f1f6af4ac7cec446b/dns-3.0.2.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="73271f129d61641179a13c0f1f6af4ac7cec446b">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/dns-3.0.2-782518987336fbee7d8681a3c9faea22eb1f670e.jar" />
+    </item>
+    <item
+        jar="/Users/ian/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/2.0.1/516c03b21d50a644d538de0f0369c620989cd8f0/jsr305-2.0.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="516c03b21d50a644d538de0f0369c620989cd8f0">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/jsr305-2.0.1-04c491f342409eb416867edcf9dd5684fefe70fd.jar" />
+    </item>
+    <item
+        jar="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-44d9312f7c5ddb8f641832e12ee4b5595027e1dc.jar" />
+    </item>
+    <item
+        jar="/Users/ian/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/11.0.2/35a3c69e19d72743cac83778aecbee68680f63eb/guava-11.0.2.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="35a3c69e19d72743cac83778aecbee68680f63eb">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/guava-11.0.2-a2d94c4efd923b34e2e28b9e69620269f4a14b54.jar" />
+    </item>
+    <item
+        jar="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/exploded-aar/pexkit-android-example/pexkit/unspecified/jars/libs/libjingle_peerconnection.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d286acfc94200acb83a1b3b1601a1a9c5c199f49">
+        <dex dex="/Users/ian/Projects/StudioProjects/pexkit-android-example/app/build/intermediates/pre-dexed/debug/libjingle_peerconnection-06b2e14aae361bb178bb9e5f62e5d27f2aaea9c1.jar" />
+    </item>
+
+</items>
