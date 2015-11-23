@@ -23,6 +23,8 @@ higher resolutions.
 
 ## Changelog
 
+ - 7.4.13 (PexKit-SDK-2015-11-03_v7.4.13) : Fix mute in landscape, add GW call to cal scraper,
+                                            issues with ports and whitespace in display names
  - 7.4.10 (PexKit-SDK-2015-11-03_v7.4.10) : Better URI handling, reduce local video capture size
  - 7.4.9  (PexKit-SDK-2015-11-03)         : Added hardware acceleration
  - 7.4.8  (PexKit-SDK-2015-10-27)         : requestToken changes
