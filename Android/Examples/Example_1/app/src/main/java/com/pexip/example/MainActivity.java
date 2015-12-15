@@ -28,8 +28,11 @@ public class MainActivity extends ActionBarActivity {
         try {
             videoView = (GLSurfaceView) findViewById(R.id.videoView);
             this.conference = new Conference("Android Example App", new URI("my.vmr@pexipdemo.com"), "");
+	    // This will create a context with selfview in the top left (3% of width/height padding) that is 10% of width/height in size
+            //this.pexContext = PexKit.createWithSelfview(getBaseContext(), (GLSurfaceView) findViewById(R.id.videoView), 3, 3, 10, 10);
             this.pexContext = PexKit.create(getBaseContext(), (GLSurfaceView) findViewById(R.id.videoView));
-
+            // This will hide the selfview
+            //this.pexContext.moveSelfView(0,0,0,0);
             Log.i("MainActivity", "done initializing pexkit");
         } catch (Exception e) {}
 

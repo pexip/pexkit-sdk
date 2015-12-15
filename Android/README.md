@@ -12,3 +12,9 @@ your lib:
 1. [Spotify DNS](https://github.com/spotify/dns-java) and its dependencies (try [MVN repository](http://mvnrepository.com/artifact/com.spotify/dns/3.0.2) for a pre-built JAR file)
 
 See [this issue](https://github.com/pexip/pexkit-sdk/issues/4) for more details
+
+## Changelog
+
+  - PexKit-SDK-2015-12-15.aar  Changes for crashes on devices with no
+                               front camera, cleanups to token request code and moving selfview
+  - PexKit-SDK-2015-10-09.aar  Initial release
