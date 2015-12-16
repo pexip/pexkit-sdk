@@ -25,4 +25,5 @@ dependencies {
     compile project(':pexkit')
     compile group: 'com.spotify', name: 'dns', version: '3.0.2'
     compile group: 'com.loopj.android', name: 'android-async-http', version: '1.4.7'
+    compile 'io.pristine:libjingle:10111@aar'
 }
