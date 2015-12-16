@@ -10,6 +10,7 @@ your lib:
 
 1. [android-async-http](https://github.com/loopj/android-async-http) (try [MVN repository](http://mvnrepository.com/artifact/com.loopj.android/android-async-http/1.4.9) for a pre-built JAR file)
 1. [Spotify DNS](https://github.com/spotify/dns-java) and its dependencies (try [MVN repository](http://mvnrepository.com/artifact/com.spotify/dns/3.0.2) for a pre-built JAR file)
+1. [libjingle](https://github.com/pristineio/webrtc-android) and its dependencies (try [MVN repository](http://mvnrepository.com/artifact/io.pristine/libjingle) for a pre-built JAR file must be version: 10111)
 
 See [this issue](https://github.com/pexip/pexkit-sdk/issues/4) for more details
 
