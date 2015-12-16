@@ -81,6 +81,10 @@ public class MainActivity extends ActionBarActivity {
                                     conference.setAudioMute(true);
                                     Log.i("MainActivity", "escalate call status is " + status);
                                     conference.listenForEvents();
+				    conference.setAudioMute(true);
+				    // examples of muting video and getting audio mute status
+				    // conference.setVideoMute(true);
+				    // conference.getAudioMute();
                                 }
                             });
                             ((Button) v).setEnabled(true);
