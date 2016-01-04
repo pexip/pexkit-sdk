@@ -16,6 +16,8 @@ See [this issue](https://github.com/pexip/pexkit-sdk/issues/4) for more details
 
 ## Changelog
 
+  - PexKit-SDK-2016-01-03.aar  Updates to selfview aspect ratios, camera control and participant
+                               object
   - PexKit-SDK-2015-12-16.aar  add audio/video mute and now use pristine.io webrtc libs
                                as a dependency.
   - PexKit-SDK-2015-12-15.aar  Changes for crashes on devices with no
