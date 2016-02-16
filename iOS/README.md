@@ -21,6 +21,14 @@ Be mindful of the device you are targetting when setting the
 resolution as older devices e.g. iPhone 5 will struggle with the
 higher resolutions.
 
+## Releasing to the app store
+
+The SDK called PexKit-SDK-<date> contains symbols to allow you to run
+your apps on the iOS simulators.  This cannot be used to submit to the
+app store.  When submitting your final app, please rebuild using the
+PexKit-Release-SDK.  The content is identical but the i386 and x86_64
+symbols have been removed.
+
 ## Changelog
 
  - 7.4.15 (PexKit-SDK-2016-01-13_v7.4.15) : Ignore cache-control for API requests
