@@ -1,0 +1,132 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us" >
+<head>
+<title>Pexip Infinity</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<meta name="robots" content="noindex, nofollow" />
+<script type="text/javascript" src="EventSource.js"></script>
+<script type="text/javascript" src="swfobject.js"></script>
+<script type="text/javascript" src="/static/webrtc/js/pexrtc.js"></script>
+<!-- <script type="text/javascript" src="pexrtc.js"></script> -->
+<script type="text/javascript" src="webui.js"></script>
+<script type='text/javascript'>
+window.onload = function()
+{
+    var url = window.location.href;
+    var params = url.substr(url.indexOf("?")+1).split("&");
+    var i;
+    var qp = {};
+    for (i=0;i<params.length;i++) {
+        var kv = params[i].split("=");
+        qp[kv[0]] = kv[1];
+    }
+    console.log(qp);
+
+    var source = "";
+    if ("join_pres" in qp) {
+        source = "screen";
+    }
+
+    var loadCheckInterval = setInterval(function (){
+        var flash = document.getElementById('flashvideo');
+        if (flash.startCall !== undefined) {
+            initialise(document.domain, qp['alias'], qp['bandwidth'], qp['name'], "", source, flash);
+            clearInterval(loadCheckInterval);
+        }
+    }, 500);
+}
+</script>
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+
+<body>
+
+<!-- Container -->
+<div id="container" class="site">
+    <!-- Header -->
+    <header id="header" class="branding" role="banner">
+        
+        <img src="img/logo.png" alt="Pexip">
+        <h1>Infinity</h1>
+        
+    </header>
+    <!-- END Header -->
+
+    <!-- Content -->
+
+  <div id="selectrole" class="main site join hidden">
+    <h2>Select your role for this conference:</h2>
+    <form method="get">
+        <div class="cf">
+            <input type="radio" value="1" name="role" id="id_guest" class="webrtcinput" checked>
+            <label for="id_guest">Guest</label>
+        </div>
+        <div class="cf">
+            <input type="radio" value="2" name="role" id="id_host" class="webrtcinput">
+            <label for="id_host">Host</label>
+        </div>
+
+        <input type="button" value="Join Conference" name="join" id="id_join" class="webrtcbutton" onClick="submitSelectRole();">
+    </form>
+  </div>
+
+
+  <div id="pinentry" class="main site join hidden">
+    <form method="get">
+        <label for="id_pin" class="vh">Enter the conference PIN</label>
+        <input type="password" value="" name="pin" id="id_pin" placeholder="Enter the conference PIN" required class="webrtcinput">
+
+        <input type="button" value="Join Conference" name="join" id="id_join" class="webrtcbutton" onClick="submitPinEntry();">
+    </form>
+  </div>
+
+
+  <div id="ivrentry" class="main site join hidden">
+    <form method="get">
+        <label for="id_room" class="vh">Enter the target extension</label>
+        <input type="text" value="" name="room" id="id_room" placeholder="Enter the target extension" required class="webrtcinput">
+
+        <input type="button" value="Join Conference" name="join" id="id_join" class="webrtcbutton" onClick="submitIVREntry();">
+    </form>
+  </div>
+
+
+  <div id="maincontent" class="main cf">
+    <section class="top">
+      <aside class="participants"><!-- List of participants -->
+        <h2 id="rosterheading">Participants</h2>
+        <div id="rosterlist" class="rosterlist">
+          <ul id="rosterul">
+          </ul>
+        </div>
+      </aside>
+      <div id="videocontainer" class="videocontainer">
+        <object type="application/x-shockwave-flash" id="flashvideo" name="PexVideo" align="middle" data="/static/webrtc/flash/PexVideo.swf" width="100%" height="100%"><param name="quality" value="high"><param name="bgcolor" value="#262626"><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="wmode" value="transparent"><param name="scale" value="exactFit"></object>
+      </div>
+    </section>
+
+    <footer id="controls" class="controls cf">
+      <ul>
+        <li><a id="id_selfview" class="webrtcbutton btn-selfview" onclick="toggleSelfview();">Show Selfview</a></li>
+        <li><a id="id_muteaudio" class="webrtcbutton btn-audio" onclick="muteAudioStreams();">Mute Audio</a></li>
+        <li><a id="id_mutevideo" class="webrtcbutton btn-video" onclick="muteVideoStreams();">Mute Video</a></li>
+        <li><a id="id_fullscreen" class="webrtcbutton btn-fullscreen inactive" onclick="goFullscreen();">Fullscreen</a></li>
+        <li><a id="id_screenshare" class="webrtcbutton btn-presentscreen inactive" onclick="presentScreen();">Present Screen</a></li>
+        <li><a id="id_presentation" class="webrtcbutton btn-presentation inactive" onclick="togglePresentation();">No Presentation Active</a></li>
+        <li><a id="id_disconnect" class="webrtcbutton btn-disconnect" onclick="window.location='index.html';">Disconnect</a></li>
+      </ul>
+    </footer>
+  </div>
+
+    <!-- END Content -->
+
+    <div id="footer"> </div>
+</div>
+<!-- END Container -->
+
+</body>
+</html>
+

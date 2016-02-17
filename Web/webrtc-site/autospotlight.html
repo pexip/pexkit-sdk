@@ -1,0 +1,88 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us" >
+<head>
+<title>Pexip Infinity</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<meta name="robots" content="noindex, nofollow" />
+
+
+<script type='text/javascript' src="https://pexipdemo.com/static/webrtc/js/pexrtc.js"></script>
+<script type='text/javascript'>
+function doStream() {
+    var rtc = new PexRTC();
+    rtc.onSetup = function() { var id_pin = document.getElementById('id_pin'); rtc.connect(id_pin.value); };
+    rtc.onDisconnect = function(reason) { alert(reason); };
+    rtc.onError = function(reason) { alert(reason); };
+
+    rtc.onRosterList = function(roster) {
+        var presenter_name = '';
+        for (var i = 0; i < roster.length; i++) {
+            var entry = roster[i];
+            if (entry.spotlight > 0 && entry.is_presenting == "NO") {
+                rtc.setParticipantSpotlight(entry.uuid, false);
+            } else if (entry.spotlight == 0 && entry.is_presenting == "YES") {
+                rtc.setParticipantSpotlight(entry.uuid, true);
+                presenter_name = entry.display_name;
+            }
+        }
+        var id_presenter = document.getElementById('id_presenter');
+        id_presenter.value = presenter_name;
+    };
+
+    var id_alias = document.getElementById('id_alias');
+    var id_name = document.getElementById('id_name');
+    var id_pin = document.getElementById('id_pin');
+    var id_join = document.getElementById('id_join');
+    id_pin.classList.add('hidden');
+    id_join.classList.add('hidden');
+    rtc.makeCall("pexipdemo.com", id_alias.value, id_name.value, null, "none");
+}
+</script>
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+
+<body>
+
+<!-- Container -->
+<div id="container" class="site">
+    <!-- Header -->
+    <header id="header" class="branding" role="banner">
+        
+        <img src="img/logo.png" alt="Pexip">
+        <h1>Infinity</h1>
+        
+    </header>
+    <!-- END Header -->
+
+    <!-- Content -->
+    
+  <div id="maincontent" class="main site join">
+    <form>
+        <label for="id_alias" class="vh">Enter the conference alias</label>
+        <input type="text" value="" name="alias" id="id_alias" placeholder="Enter the conference alias" required class="webrtcinput">
+
+        <label for="id_name" class="vh">Enter your name</label>
+        <input type="text" value="" name="name" id="id_name" placeholder="Enter your name" required class="webrtcinput">
+
+        <label for="id_pin" class="vh">Enter PIN</label>
+        <input type="text" value="" name="name" id="id_pin" placeholder="PIN (if required)" required class="webrtcinput">
+
+        <input type="button" value="Auto-Spotlight" name="join" id="id_join" class="webrtcbutton" onclick="doStream();">
+
+        <label for="id_url" class="vh">Presenter</label>
+        <input type="text" value="" name="presenter" id="id_presenter" placeholder="(none)" class="webrtcinput" readonly>
+
+    </form>
+  </div>
+
+    <!-- END Content -->
+
+    <div id="footer"> </div>
+</div>
+<!-- END Container -->
+
+</body>
+</html>

@@ -1,0 +1,576 @@
+/*
+ :::  Reset
+-------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, nav, section {
+  display: block;
+}
+ol, ul {
+  list-style: none;
+}
+
+
+
+/*
+ :::  Fonts
+-------------------------------------------------- */
+
+@font-face {
+  font-family: 'pexip';
+  src: url('fonts/pexip.eot');
+  src: url('fonts/pexip.eot?#iefix') format('embedded-opentype'),
+    url('fonts/pexip.woff') format('woff'),
+    url('fonts/pexip.ttf') format('truetype'),
+    url('fonts/pexip.svg#$icon-font') format('svg');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('fonts/opensans-regular-webfont.eot') format('embedded-opentype'),
+    url('fonts/opensans-regular-webfont.woff') format('woff'),
+    url('fonts/opensans-regular-webfont.ttf') format('truetype'),
+    url('fonts/opensans-regular-webfont.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+/*
+ :::  Site
+-------------------------------------------------- */
+html {
+  min-height: 100%;
+  font-size: 100%;
+  position: relative;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  padding: 30px;
+}
+body {
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  color: #333;
+  line-height: 1;
+  background-color: #fff;
+}
+.site {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.main {
+  width: 100%;
+  display: block;
+}
+.top {
+  background: #f2f2f2;
+  height: 600px;
+  position: relative;
+  overflow: hidden;
+}
+@media only screen and (max-width : 550px) {
+  .top {
+    height: auto;
+  }
+}
+
+
+
+/*
+ :::  Site Header
+-------------------------------------------------- */
+.branding {
+  width: 100%;
+  position: relative;
+}
+.branding img {
+  display: inline-block;
+  width: 112px;
+  height: 112px;
+}
+.branding h1 {
+/*  position: absolute;
+  right: 0;
+  top: 0; */
+  position: relative;
+  left: 140px;
+  top: -75px;
+  font-weight: 600;
+  color: #999;
+}
+
+.rosterlist {
+  height: 545px;
+}
+.rosterlist.shorter {
+  height: 410px;
+}
+
+/*
+ :::  .participants <aside>
+-------------------------------------------------- */
+.participants {
+  float: left;
+  width: 20%;
+  line-height: 1.25em;
+  border-right: 1px solid #fff;
+}
+.participants ul {
+  overflow: auto;
+  height: 100%;
+}
+.participants h2 {
+  padding: 15px 5%;
+  background: #d5d5d5;
+  font-weight: 400;
+  border-bottom: 1px solid #fff;
+}
+.participants li {
+  padding: 10px 5%;
+  width: 100%;
+  border-bottom: 1px solid #fff;
+  transition: background .3s, color .3s;
+}
+.participants li:hover {
+  background: #f38b3c;
+  color: #fff;
+}
+.participants h3 {
+  font-weight: 600;
+  font-size: 1em;
+}
+.participants h3:before {
+  position: relative;
+  content: '\e185';
+  font-family: 'pexip';
+  margin-right: 10px;
+}
+.participants h3.presenting:before {
+  position: relative;
+  content: '\e120';
+  font-family: 'pexip';
+  margin-right: 10px;
+}
+.participants p {
+  font-size: 0.75em;
+}
+@media only screen and (max-width : 950px) {
+  .participants {
+    width: 33.333333%;
+  }
+}
+@media only screen and (max-width : 550px) {
+  .participants {
+    float: none;
+    width: 100%;
+    border-right: none;
+  }
+  .participants ul {
+    padding-bottom: 0;
+  }
+}
+
+
+/*
+ :::  .selfview <div>
+-------------------------------------------------- */
+.selfview {
+  position: absolute;
+  z-index: 99999;
+  max-width: 20%;
+  max-height: 135px;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #fff;
+  border-right: 1px solid #fff;
+
+  background-size: cover;
+  background-position: center;
+}
+.selfview video {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+@media only screen and (max-width : 950px) {
+  .selfview {
+    max-width: 33.333333%;
+    max-height: 161px;
+  }
+}
+@media only screen and (max-width : 550px) {
+  .selfview {
+    position: relative;
+    max-width: 100%;
+    border-right: none;
+  }
+}
+
+
+/*
+ :::  .videocontainer <div>
+-------------------------------------------------- */
+.videocontainer {
+  background: #333;
+  position: absolute;
+  left: 20%;
+  height: 100%;
+  width: 80%;
+  padding: 0 2%;
+}
+.videocontainer video {
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+@media only screen and (max-width : 950px) {
+  .videocontainer {
+    width: 66.666666%;
+    left: 33.333333%;
+  }
+}
+@media only screen and (max-width : 550px) {
+  .videocontainer {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    left: 0;
+  }
+  .videocontainer video {
+    height: auto;
+  }
+}
+
+
+/*
+ :::  Controls [.controls] <footer>
+-------------------------------------------------- */
+.controls {
+  border-top: 1px solid #fff;
+}
+.controls li {
+  float: left;
+  display: inline-block;
+  width: 14%;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  vertical-align: center;
+}
+.controls li:nth-child(4) {
+  width: 12%;
+}
+.controls li:nth-child(6) {
+  width: 18%;
+}
+.controls li:last-child {
+  border-right: none !important;
+}
+@media only screen and (max-width : 1050px) {
+  .controls li,
+  .controls li:nth-child(4),
+  .controls li:nth-child(6) {
+    width: 33.3333333%;
+  }
+  .controls li:nth-child(3n) {
+    border-right: none;
+  }
+  .controls li:last-child {
+    width: 100%;
+  }
+}
+@media only screen and (max-width : 550px) {
+  .controls li,
+  .controls li:nth-child(4),
+  .controls li:nth-child(6) {
+    width: 100%;
+    border-right: none;
+  }
+}
+
+.controls a {
+  font-family: 'Open Sans', sans-serif;
+  display: block;
+  width: 100%;
+  padding: 20px 10px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 0.9em;
+  cursor: pointer;
+  background: #d5d5d5;
+  height: 56px;
+  -webkit-transition: background .3s, color .3s;
+  transition: background .3s, color .3s;
+  vertical-align: middle;
+}
+.controls a:hover,
+.controls a.active { /* active state */
+  background: #f38b3c;
+  color: #fff;
+  font-weight: 400;
+}
+
+/* Inactive State */
+.controls .inactive {
+  color: #888;
+  cursor: default;
+}
+.controls .inactive:hover {
+  color: #888;
+  background: #d5d5d5;
+}
+
+
+
+/*
+ :::  Controls [.controls] -> Icons
+ :::  You can call the .active class in your JS to switch the icons for an active state
+-------------------------------------------------- */
+.controls a:before {
+  position: relative;
+  font-family: 'pexip';
+  margin-right: 10px;
+  font-size: 1.1em;
+  top: 2px;
+  font-weight: 300;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Show Selfview */
+.controls .btn-selfview:before {
+  content: '\e18c';
+}
+
+/* Mute Audio */
+.controls .btn-audio:before {
+  content: '\e38f';
+}
+.controls .btn-audio.selected:before {
+  content: '\e3a4';
+}
+
+/* Mute Video */
+.controls .btn-video:before {
+  content: '\e2d9';
+}
+.controls .btn-video.selected:before {
+  content: '\e2da';
+}
+
+/* Present Screen */
+.controls .btn-presentscreen:before {
+  content: '\e120';
+}
+
+/* Presentation */
+.controls .btn-presentation:before {
+  content: '\e121';
+}
+
+/* Go Fullscreen */
+.controls .btn-fullscreen:before {
+  content: '\e1bf';
+}
+
+/* Disconnect */
+.controls .btn-disconnect:before {
+  content: '\e290';
+}
+
+
+
+/*
+ :::  Join / Login Page -> Add the .join class to the .site container!
+-------------------------------------------------- */
+.site.join {
+  max-width: 500px;
+}
+.site.join input[type="text"],
+.site.join input[type="password"],
+.site.join input[type="button"],
+.site.join input[type="submit"] {
+  width: 100%;
+  padding: 20px;
+  font-size: 1.1em;
+  font-family: inherit;
+  color: #666;
+  border-radius: 0px;
+  background: #eee;
+  margin-bottom: 1px;
+  font-weight: 300;
+  -webkit-transition: background .3s, color .3s, border .3s;
+  transition: background .3s, color .3s, border .3s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.site.join input[type="button"],
+.site.join input[type="submit"] {
+  width: 49.5%;
+}
+.site.join select {
+  width: 100%;
+  padding: 20px 20px;
+  font-size: 1.1em;
+  background-color: #eee;
+  height: 64px;
+  font-family: inherit;
+  color: #666;
+  border-radius: 0px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  cursor: pointer;
+  font-weight: 300;
+  background-image: url(img/select.png);
+  background-repeat: no-repeat;
+  background-size: 60px 64px;
+  background-position: center right;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+}
+select::-ms-expand {
+    display: none;
+}
+
+/* Some Retina Love... */
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  .site.join select {
+    background-image: url(img/select@2x.png);
+  }
+}
+
+
+
+/*
+ :::  Role Page -> Add the .join class to the .site container!
+-------------------------------------------------- */
+.site.join h2 {
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-size: 1.4em;
+}
+.site.join form div {
+  width: 100%;
+  padding: 0 20px;
+  background: #eee;
+  line-height: 50px;
+  border-bottom: 1px solid #fff;
+}
+.site.join input[type="radio"] {
+  float: left;
+  margin-right: 10px;
+  background: #fff;
+  color: #666;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border-radius: 0;
+  border: none;
+  position: relative;
+  top: 15px;
+  font-family: inherit;
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-align: center;
+  line-height: 15px;
+}
+.site.join input[type="radio"]:checked:before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: #999;
+  display: block;
+  position: relative;
+  top: 3px;
+  left: 3px;
+}
+.site.join label {
+  float: left;
+}
+
+
+/* Form Submit button */
+.site.join input[type="button"],
+.site.join input[type="submit"] {
+  background: #555;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.site.join input[type="button"]:hover,
+.site.join input[type="submit"]:hover {
+  background: #f38b3c;
+}
+
+
+/* Let the placeholder text disappear on focus */
+[placeholder]:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+
+/* Form error */
+.site.join .webrtcerror {
+  color: #fff;
+  background: #cf4326;
+  font-size: 1em;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 0px;
+}
+
+
+
+/*
+ :::  Clearfix [cf]
+-------------------------------------------------- */
+.cf:before,
+.cf:after {
+  content: ' ';
+  display: table;
+}
+.cf:after {
+  clear: both;
+}
+
+
+
+/*
+ :::  Visually hidden [vh]
+ :::  For better accessibility --> <label>
+-------------------------------------------------- */
+.vh {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
+.hidden {
+  display: none;
+}
+

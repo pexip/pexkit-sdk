@@ -1,0 +1,90 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us" >
+<head>
+<title>Pexip Infinity</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<meta name="robots" content="noindex, nofollow" />
+<script type='text/javascript'>
+window.onload = function()
+{
+    var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+    var is_explorer = navigator.userAgent.indexOf('MSIE') > -1 || navigator.userAgent.indexOf('Trident') > -1;
+    var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
+    var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+    var is_Opera = navigator.userAgent.indexOf("Presto") > -1;
+    if ((is_chrome)&&(is_safari)) {is_safari=false;}
+
+    var id_form = document.getElementById('id_form');
+    if (is_safari || is_explorer) {
+        id_form.action = "conference-flash.html";
+    }   
+
+    var id_join_pres = document.getElementById('id_join_pres');
+    if (!is_chrome) {
+        id_join_pres.hidden = true;
+    }
+ 
+    var bw;
+    if (navigator.userAgent.indexOf("Mobile") == -1) {
+        bw = "1280";
+    } else {
+        bw = "192";
+    }
+    
+    var id_bandwidth = document.getElementById('id_bandwidth');
+    for (var i = 0; i < id_bandwidth.children.length; i++) {
+        if (id_bandwidth.children[i].value == bw) {
+            id_bandwidth.children[i].selected = true;
+        }
+    }
+}
+</script>
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+
+<body>
+
+<!-- Container -->
+<div id="container" class="site">
+    <!-- Header -->
+    <header id="header" class="branding" role="banner">
+        
+        <img src="img/logo.png" alt="Pexip">
+        <h1>Infinity</h1>
+        
+    </header>
+    <!-- END Header -->
+
+    <!-- Content -->
+    
+  <div id="maincontent" class="main site join">
+    <form id="id_form" action="conference.html" method="get">
+        <label for="id_alias" class="vh">Enter the conference alias</label>
+        <input type="text" value="" name="alias" id="id_alias" placeholder="Enter the conference alias" required class="webrtcinput">
+
+        <label for="id_name" class="vh">Enter your name</label>
+        <input type="text" value="" name="name" id="id_name" placeholder="Enter your name" required class="webrtcinput">
+
+        <select name="bandwidth" class="webrtcinput" id="id_bandwidth">
+            <option value="1920">Maximum Bandwidth (1920kbps)</option>
+            <option value="1280" selected>High Bandwidth (1280kbps)</option>
+            <option value="576">Medium Bandwidth (576kbps)</option>
+            <option value="192">Low Bandwidth (192kbps)</option>
+        </select>
+
+        <input type="submit" value="Join Conference" name="join" id="id_join" class="webrtcbutton">
+        <input type="submit" value="Present Screen Only" name="join_pres" id="id_join_pres" class="webrtcbutton">
+    </form>
+  </div>
+
+    <!-- END Content -->
+
+    <div id="footer"> </div>
+</div>
+<!-- END Container -->
+
+</body>
+</html>
