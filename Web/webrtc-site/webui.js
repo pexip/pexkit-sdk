@@ -283,6 +283,10 @@ function holdresume(setting) {
     }
 }
 
+function muteAudioPlayback(value) {
+    video.muted = !video.muted;
+}
+
 /* ~~~ ROSTER LIST ~~~ */
 
 function updateRosterList(roster) {
