@@ -162,6 +162,24 @@ body {
 .participants p {
   font-size: 0.75em;
 }
+
+.participants .mute-checkbox {
+    float: right;
+    margin-right: 10px;
+}
+.participants .mute-checkbox:checked:before {
+    position: relative;
+    right: 15px;
+    content: '\e3a4';
+    font-family: 'pexip';
+}
+.participants .mute-checkbox:not(checked):before {
+    position: relative;
+    right: 15px;
+    content: '\e38f';
+    font-family: 'pexip';
+}
+
 @media only screen and (max-width : 950px) {
   .participants {
     width: 33.333333%;
@@ -573,4 +591,3 @@ select::-ms-expand {
 .hidden {
   display: none;
 }
-

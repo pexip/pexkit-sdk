@@ -289,14 +289,21 @@ function muteAudioPlayback(value) {
 
 /* ~~~ ROSTER LIST ~~~ */
 
+function createMuteCallback(uuid, checkbox) {
+    return function() {
+        rtc.setParticipantMute(uuid, checkbox.checked);
+    };
+}
+
 function updateRosterList(roster) {
     rosterlist.removeChild(rosterul);
     rosterul = document.createElement("ul");
     rosterlist.appendChild(rosterul);
 
-    var state = "";
+    var h2, subtitle, surtitle, muteCheckbox,
+        state = "";
     if (roster.length > 0 && 'role' in roster[0]) {
-        var h2 = document.createElement("h2");
+        h2 = document.createElement("h2");
         h2.innerHTML = trans['TITLE_HOSTS'];
         rosterul.appendChild(h2);
         state = "HOSTS";
@@ -305,31 +312,40 @@ function updateRosterList(roster) {
     rosterheading.textContent = trans['HEADING_ROSTER_LIST'] + " (" + roster.length + ")";
 
     for (var i = 0; i < roster.length; i++) {
-        if (roster[i]['role'] == "unknown") {
+        if (roster[i].role == "unknown") {
             continue;
-        } else if (roster[i]['role'] == "guest" && state == "HOSTS") {
-            var h2 = document.createElement("h2");
+        } else if (roster[i].role == "guest" && state == "HOSTS") {
+            h2 = document.createElement("h2");
             h2.innerHTML = trans['TITLE_GUESTS'];
             rosterul.appendChild(h2);
             state = "GUESTS";
         }
 
         var li = document.createElement("li");
-        if (roster[i]['display_name'] != "" && roster[i]['display_name'] != roster[i]['uri']) {
-            var subtitle = document.createElement("p");
-            subtitle.innerHTML = roster[i]['uri'];
-            var surtitle = document.createElement("h3");
-            surtitle.innerHTML = roster[i]['display_name'];
-            if (roster[i]['is_presenting'] == "YES") {
+
+        muteCheckbox = document.createElement("input");
+        muteCheckbox.type = 'checkbox';
+        muteCheckbox.classList.add('mute-checkbox');
+        muteCheckbox.checked = roster[i].is_muted === "YES";
+        muteCheckbox.onchange = createMuteCallback(roster[i].uuid, muteCheckbox);
+        li.appendChild(muteCheckbox);
+
+        if (roster[i].display_name !== "" && roster[i].display_name != roster[i].uri) {
+            subtitle = document.createElement("p");
+            subtitle.innerHTML = roster[i].uri;
+            surtitle = document.createElement("h3");
+            surtitle.innerHTML = roster[i].display_name;
+            if (roster[i].is_presenting == "YES") {
                 surtitle.classList.add("presenting");
             }
+
             li.appendChild(surtitle);
             li.appendChild(subtitle);
         } else {
-            var surtitle = document.createElement("h3");
-            surtitle.innerHTML = roster[i]['uri'];
+            surtitle = document.createElement("h3");
+            surtitle.innerHTML = roster[i].uri;
             li.appendChild(surtitle);
-            if (roster[i]['is_presenting'] == "YES") {
+            if (roster[i].is_presenting == "YES") {
                 surtitle.classList.add("presenting");
             }
         }
