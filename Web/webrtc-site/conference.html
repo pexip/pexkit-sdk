@@ -116,6 +116,8 @@ window.onload = function()
       </ul>
       <ul>
         <li><a onclick="id_muteaudioplayback.click()">Mute Audio Playback <input id="id_muteaudioplayback" type="checkbox" onchange="muteAudioPlayback(this.checked)" onclick="event.stopPropagation()" /></a></li>
+        <li><a onclick="rtc.setMuteAllGuests(true)">Mute all Guests</a></li>
+        <li><a onclick="rtc.setMuteAllGuests(false)">Unmute all Guests</a></li>
       </ul>
     </footer>
   </div>
