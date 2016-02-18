@@ -41,7 +41,6 @@ trans['BUTTON_SHOWSELF'] = "Show Selfview";
 trans['BUTTON_HIDESELF'] = "Hide Selfview";
 trans['BUTTON_SCREENSHARE'] = "Share Screen";
 trans['BUTTON_STOPSHARE'] = "Stop Sharing";
-trans['HEADING_ROSTER_LIST'] = "Participants";
 trans['TITLE_HOSTS'] = "Hosts";
 trans['TITLE_GUESTS'] = "Guests";
 
@@ -302,64 +301,55 @@ function createDisconnectCallback(uuid) {
 }
 
 function updateRosterList(roster) {
-    rosterlist.removeChild(rosterul);
-    rosterul = document.createElement("ul");
-    rosterlist.appendChild(rosterul);
+    rosterul.innerHTML = '';
+    guestrosterul.innerHTML = '';
 
-    var li, h2, subtitle, surtitle, muteButton, disconnectButton,
-        state = "";
-    if (roster.length > 0 && 'role' in roster[0]) {
-        h2 = document.createElement("h2");
-        h2.innerHTML = trans['TITLE_HOSTS'];
-        rosterul.appendChild(h2);
-        state = "HOSTS";
-    }
+    var li, h2, subtitle, surtitle, muteButton, disconnectButton;
 
-    rosterheading.textContent = trans['HEADING_ROSTER_LIST'] + " (" + roster.length + ")";
-
-    for (var i = 0; i < roster.length; i++) {
-        if (roster[i].role == "unknown") {
+    rosterheading.textContent = roster.length;
+    for (var participant, i = 0; i < roster.length; i++) {
+        participant = roster[i];
+        if (participant.role == "unknown") {
             continue;
-        } else if (roster[i].role == "guest" && state == "HOSTS") {
-            h2 = document.createElement("h2");
-            h2.innerHTML = trans['TITLE_GUESTS'];
-            rosterul.appendChild(h2);
-            state = "GUESTS";
         }
 
         li = document.createElement("li");
-        li.onclick = createParticipantClickCallback(roster[i]);
+        li.onclick = createParticipantClickCallback(participant);
 
 
         disconnectButton = document.createElement("input");
         disconnectButton.type = 'button';
         disconnectButton.value = '\ue290';
         disconnectButton.classList.add('disconnect-button');
-        disconnectButton.onclick = createDisconnectCallback(roster[i].uuid);
+        disconnectButton.onclick = createDisconnectCallback(participant.uuid);
         li.appendChild(disconnectButton);
 
         muteButton = document.createElement("input");
         muteButton.type = 'button';
-        muteButton.value = roster[i].is_muted === "YES" ? '\ue3a4' : '\ue38f';
-        muteButton.classList.add(roster[i].is_muted === "YES" ? 'participant-unmute' : 'participant-mute');
-        muteButton.onclick = createMuteCallback(roster[i].uuid, roster[i].is_muted !== "YES");
+        muteButton.value = participant.is_muted === "YES" ? '\ue3a4' : '\ue38f';
+        muteButton.classList.add(participant.is_muted === "YES" ? 'participant-unmute' : 'participant-mute');
+        muteButton.onclick = createMuteCallback(participant.uuid, participant.is_muted !== "YES");
         li.appendChild(muteButton);
 
         surtitle = document.createElement("h3");
-        surtitle.innerHTML = roster[i].display_name || roster[i].uri;
+        surtitle.innerHTML = participant.display_name || participant.uri;
         li.appendChild(surtitle);
 
-        if (roster[i].display_name && roster[i].display_name != roster[i].uri) {
+        if (participant.display_name && participant.display_name != participant.uri) {
             subtitle = document.createElement("p");
-            subtitle.innerHTML = roster[i].uri;
+            subtitle.innerHTML = participant.uri;
             li.appendChild(subtitle);
         }
 
-        if (roster[i].is_presenting == "YES") {
+        if (participant.is_presenting == "YES") {
             surtitle.classList.add("presenting");
         }
 
-        rosterul.appendChild(li);
+        if (participant.role == "guest") {
+            guestrosterul.appendChild(li);
+        } else if (participant.role == "chair") {
+            rosterul.appendChild(li);
+        }
     }
 
     if (video && navigator.userAgent.indexOf("Chrome") != -1 && navigator.userAgent.indexOf("Mobile") == -1 && !source) {
