@@ -165,20 +165,9 @@ hr {
   font-size: 0.75em;
 }
 
-.participants .mute-checkbox, .participants .disconnect-button {
+.participants .disconnect-button, .participant-unmute, .participant-mute {
     float: right;
     margin-right: 10px;
-}
-.participants .mute-checkbox:checked:before {
-    position: relative;
-    right: 15px;
-    content: '\e3a4';
-    font-family: 'pexip';
-}
-.participants .mute-checkbox:not(checked):before {
-    position: relative;
-    right: 15px;
-    content: '\e38f';
     font-family: 'pexip';
 }
 

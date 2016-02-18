@@ -289,9 +289,9 @@ function muteAudioPlayback(value) {
 
 /* ~~~ ROSTER LIST ~~~ */
 
-function createMuteCallback(uuid, checkbox) {
+function createMuteCallback(uuid, value) {
     return function() {
-        rtc.setParticipantMute(uuid, checkbox.checked);
+        rtc.setParticipantMute(uuid, value);
     };
 }
 
@@ -306,7 +306,7 @@ function updateRosterList(roster) {
     rosterul = document.createElement("ul");
     rosterlist.appendChild(rosterul);
 
-    var li, h2, subtitle, surtitle, muteCheckbox, disconnectButton,
+    var li, h2, subtitle, surtitle, muteButton, disconnectButton,
         state = "";
     if (roster.length > 0 && 'role' in roster[0]) {
         h2 = document.createElement("h2");
@@ -333,17 +333,18 @@ function updateRosterList(roster) {
 
         disconnectButton = document.createElement("input");
         disconnectButton.type = 'button';
-        disconnectButton.value = 'x';
+        disconnectButton.value = '\ue290';
         disconnectButton.classList.add('disconnect-button');
         disconnectButton.onclick = createDisconnectCallback(roster[i].uuid);
         li.appendChild(disconnectButton);
 
-        muteCheckbox = document.createElement("input");
-        muteCheckbox.type = 'checkbox';
-        muteCheckbox.classList.add('mute-checkbox');
-        muteCheckbox.checked = roster[i].is_muted === "YES";
-        muteCheckbox.onchange = createMuteCallback(roster[i].uuid, muteCheckbox);
-        li.appendChild(muteCheckbox);
+        muteButton = document.createElement("input");
+        muteButton.type = 'button';
+        roster[i].isMuted = roster[i].is_muted === "YES";
+        muteButton.value = roster[i].isMuted ? '\ue3a4' : '\ue38f';
+        muteButton.classList.add(roster[i].isMuted ? 'participant-unmute' : 'participant-mute');
+        muteButton.onclick = createMuteCallback(roster[i].uuid, !roster[i].isMuted);
+        li.appendChild(muteButton);
 
         surtitle = document.createElement("h3");
         surtitle.innerHTML = roster[i].display_name || roster[i].uri;
