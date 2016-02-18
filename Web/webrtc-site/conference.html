@@ -40,10 +40,10 @@ window.onload = function()
 <div id="container" class="site">
     <!-- Header -->
     <header id="header" class="branding" role="banner">
-        
+
         <img src="img/logo.png" alt="Pexip">
         <h1>Infinity</h1>
-        
+
     </header>
     <!-- END Header -->
 
@@ -85,7 +85,7 @@ window.onload = function()
     </form>
   </div>
 
- 
+
   <div id="maincontent" class="main cf hidden">
     <section class="top">
       <aside class="participants"><!-- List of participants -->
@@ -120,6 +120,30 @@ window.onload = function()
         <li><a onclick="rtc.setMuteAllGuests(false)">Unmute all Guests</a></li>
       </ul>
     </footer>
+
+    <div>
+        <label>
+            URI
+            <input id="dialoutUrl"/>
+        </label>
+        <label>
+            Protocol
+            <select id="dialoutProtocol">
+                <option value="sip">SIP</option>
+                <option value="h323">H323</option>
+                <option value="rtmp">RTMP</option>
+                <option value="mssip">MSSIP</option>
+            </select>
+        </label>
+        <label>
+            Role
+            <select id="dialoutRole">
+                <option value="host">host</option>
+                <option value="guest">guest</option>
+            </select>
+        </label>
+        <input type="button" value="Dial Out" onclick="dialOut(dialoutUrl.value, dialoutProtocol.value, dialoutRole.value)"/>
+    </div>
   </div>
 
     <!-- END Content -->
@@ -130,4 +154,3 @@ window.onload = function()
 
 </body>
 </html>
-

@@ -358,6 +358,21 @@ function updateRosterList(roster) {
     }
 }
 
+
+/* ~~~ DIAL OUT AND TRANSFER ~~~ */
+
+function dialOut(destination, protocol, role) {
+    function dialOutCallback(uuids) {
+        if (uuids.length == 1) {
+            console.log("Dial out to " + destination + " in call with uuid:", uuids[0]);
+        } else {
+            console.log("Dial out to " + destination + " forked to calls with uuids:", uuids);
+        }
+    }
+    rtc.dialOut(destination, protocol, role, dialOutCallback);
+}
+
+
 /* ~~~ SETUP AND TEARDOWN ~~~ */
 
 function cleanup(event) {
