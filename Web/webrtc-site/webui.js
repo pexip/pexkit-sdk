@@ -286,6 +286,11 @@ function muteAudioPlayback(value) {
     video.muted = !video.muted;
 }
 
+/* ~~~ CONFERENCE DATA ~~~ */
+function onConferenceUpdate(state) {
+    console.log("Conference state canged", state);
+}
+
 /* ~~~ ROSTER LIST ~~~ */
 
 function createMuteCallback(uuid, value) {
@@ -539,6 +544,7 @@ function initialise(confnode, conf, userbw, username, userpin, req_source, flash
     rtc.onScreenshareStopped = unpresentScreen;
     rtc.onPresentationConnected = loadPresentationStream;
     rtc.onPresentationDisconnected = remotePresentationClosed;
+    rtc.onConferenceUpdate = onConferenceUpdate;
 
     conference = conf;
     console.log("Conference: " + conference);
