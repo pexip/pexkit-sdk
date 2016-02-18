@@ -306,7 +306,7 @@ function updateRosterList(roster) {
     rosterul = document.createElement("ul");
     rosterlist.appendChild(rosterul);
 
-    var h2, subtitle, surtitle, muteCheckbox, disconnectButton,
+    var li, h2, subtitle, surtitle, muteCheckbox, disconnectButton,
         state = "";
     if (roster.length > 0 && 'role' in roster[0]) {
         h2 = document.createElement("h2");
@@ -327,7 +327,9 @@ function updateRosterList(roster) {
             state = "GUESTS";
         }
 
-        var li = document.createElement("li");
+        li = document.createElement("li");
+        li.onclick = createParticipantClickCallback(roster[i]);
+
 
         disconnectButton = document.createElement("input");
         disconnectButton.type = 'button';
@@ -365,6 +367,18 @@ function updateRosterList(roster) {
     }
 }
 
+var pdname, pduuid, pdtransferdestination, pdtransfer;
+
+function createParticipantClickCallback(participant) {
+    return function() {
+        console.log("Selected", participant);
+        pdname.textContent = participant.display_name;
+        pduuid.value = participant.uuid;
+        pdtransfer.onclick = function() {
+            rtc.transferParticipant(participant.uuid, pdtransferdestination.value);
+        };
+    };
+}
 
 /* ~~~ DIAL OUT AND TRANSFER ~~~ */
 
@@ -479,6 +493,12 @@ function initialise(confnode, conf, userbw, username, userpin, req_source, flash
     id_fullscreen = document.getElementById('id_fullscreen');
     id_screenshare = document.getElementById('id_screenshare');
     id_presentation = document.getElementById('id_presentation');
+
+    // For participant details view
+    pdname = document.getElementById('pdname');
+    pduuid = document.getElementById('pduuid');
+    pdtransfer = document.getElementById('pdtransfer');
+    pdtransferdestination = document.getElementById('pdtransferdestination');
 
     flash = flash_obj;
     if (flash) {

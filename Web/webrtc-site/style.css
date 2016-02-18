@@ -82,7 +82,9 @@ body {
   }
 }
 
-
+hr {
+    margin: 1em 0;
+}
 
 /*
  :::  Site Header
