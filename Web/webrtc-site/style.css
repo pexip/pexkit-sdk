@@ -187,6 +187,12 @@ hr {
   }
 }
 
+#pddata {
+    font-size: smaller;
+    padding: 1em;
+    margin: .5em;
+    background-color: #eee;
+}
 
 /*
  :::  .selfview <div>

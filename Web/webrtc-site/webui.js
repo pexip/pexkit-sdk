@@ -340,10 +340,9 @@ function updateRosterList(roster) {
 
         muteButton = document.createElement("input");
         muteButton.type = 'button';
-        roster[i].isMuted = roster[i].is_muted === "YES";
-        muteButton.value = roster[i].isMuted ? '\ue3a4' : '\ue38f';
-        muteButton.classList.add(roster[i].isMuted ? 'participant-unmute' : 'participant-mute');
-        muteButton.onclick = createMuteCallback(roster[i].uuid, !roster[i].isMuted);
+        muteButton.value = roster[i].is_muted === "YES" ? '\ue3a4' : '\ue38f';
+        muteButton.classList.add(roster[i].is_muted === "YES" ? 'participant-unmute' : 'participant-mute');
+        muteButton.onclick = createMuteCallback(roster[i].uuid, roster[i].is_muted !== "YES");
         li.appendChild(muteButton);
 
         surtitle = document.createElement("h3");
@@ -368,13 +367,13 @@ function updateRosterList(roster) {
     }
 }
 
-var pdname, pduuid, pdtransferdestination, pdtransfer;
+var pdname, pddata, pdtransferdestination, pdtransfer;
 
 function createParticipantClickCallback(participant) {
     return function() {
         console.log("Selected", participant);
         pdname.textContent = participant.display_name;
-        pduuid.value = participant.uuid;
+        pddata.textContent = JSON.stringify(participant, null, '\t');
         pdtransfer.onclick = function() {
             rtc.transferParticipant(participant.uuid, pdtransferdestination.value);
         };
@@ -497,7 +496,7 @@ function initialise(confnode, conf, userbw, username, userpin, req_source, flash
 
     // For participant details view
     pdname = document.getElementById('pdname');
-    pduuid = document.getElementById('pduuid');
+    pddata = document.getElementById('pddata');
     pdtransfer = document.getElementById('pdtransfer');
     pdtransferdestination = document.getElementById('pdtransferdestination');
 

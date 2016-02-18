@@ -126,11 +126,15 @@ window.onload = function()
 
     <hr />
 
-    <div>
+    <table>
+        <tr><td><h3>Dial out</h3></td></tr>
+        <tr><td>
         <label>
             URI
             <input id="dialoutUrl"/>
         </label>
+        </td></tr>
+        <tr><td>
         <label>
             Protocol
             <select id="dialoutProtocol">
@@ -140,6 +144,8 @@ window.onload = function()
                 <option value="mssip">MSSIP</option>
             </select>
         </label>
+        </td></tr>
+        <tr><td>
         <label>
             Role
             <select id="dialoutRole">
@@ -147,17 +153,31 @@ window.onload = function()
                 <option value="guest">guest</option>
             </select>
         </label>
-        <input type="button" value="Dial Out" onclick="dialOut(dialoutUrl.value, dialoutProtocol.value, dialoutRole.value)"/>
-    </div>
+        </td></tr>
+        <tr><td>
+            <input type="button" value="Dial Out" onclick="dialOut(dialoutUrl.value, dialoutProtocol.value, dialoutRole.value)"/>
+        </td></tr>
+    </table>
 
     <hr />
 
-    <div id="pd">
-        <p id="pdname"></p>
-        <input id="pduuid" />
-        <input id="pdtransferdestination" />
-        <input id="pdtransfer" type="button" value="Transfer" />
-    </div>
+    <table>
+        <tr><td><h3 id="pdname">Select a participant in the roster</h3></td></tr>
+        <tr><td>
+        <pre id="pddata"></pre>
+        </td></tr>
+        <tr><td>
+            <label>
+                Transfer destination
+                <input id="pdtransferdestination" />
+            </label>
+            <input id="pdtransfer" type="button" value="Transfer" />
+        </td></tr>
+        <tr><td>
+        </td></tr>
+        <tr><td>
+        </td></tr>
+    </table>
   </div>
 
     <!-- END Content -->
