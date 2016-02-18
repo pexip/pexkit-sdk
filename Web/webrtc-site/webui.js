@@ -343,24 +343,18 @@ function updateRosterList(roster) {
         muteCheckbox.onchange = createMuteCallback(roster[i].uuid, muteCheckbox);
         li.appendChild(muteCheckbox);
 
-        if (roster[i].display_name !== "" && roster[i].display_name != roster[i].uri) {
+        surtitle = document.createElement("h3");
+        surtitle.innerHTML = roster[i].display_name || roster[i].uri;
+        li.appendChild(surtitle);
+
+        if (roster[i].display_name && roster[i].display_name != roster[i].uri) {
             subtitle = document.createElement("p");
             subtitle.innerHTML = roster[i].uri;
-            surtitle = document.createElement("h3");
-            surtitle.innerHTML = roster[i].display_name;
-            if (roster[i].is_presenting == "YES") {
-                surtitle.classList.add("presenting");
-            }
-
-            li.appendChild(surtitle);
             li.appendChild(subtitle);
-        } else {
-            surtitle = document.createElement("h3");
-            surtitle.innerHTML = roster[i].uri;
-            li.appendChild(surtitle);
-            if (roster[i].is_presenting == "YES") {
-                surtitle.classList.add("presenting");
-            }
+        }
+
+        if (roster[i].is_presenting == "YES") {
+            surtitle.classList.add("presenting");
         }
 
         rosterul.appendChild(li);
