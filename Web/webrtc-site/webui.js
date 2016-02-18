@@ -367,16 +367,15 @@ function updateRosterList(roster) {
     }
 }
 
-var pdname, pddata, pdtransferdestination, pdtransfer;
+var pdname, pddata,
+    pdtransferuuid, pdtransferdestination, pdtransferrole, pdtransferpin;
 
 function createParticipantClickCallback(participant) {
     return function() {
         console.log("Selected", participant);
         pdname.textContent = participant.display_name;
         pddata.textContent = JSON.stringify(participant, null, '\t');
-        pdtransfer.onclick = function() {
-            rtc.transferParticipant(participant.uuid, pdtransferdestination.value);
-        };
+        pdtransferuuid.value = participant.uuid;
     };
 }
 
@@ -393,6 +392,25 @@ function dialOut(destination, protocol, role) {
     rtc.dialOut(destination, protocol, role, dialOutCallback);
 }
 
+/* TEMPORARY PATCH PEXRTC TO SUPPORT TRANSFER WITH ROLE AND PIN:
+    currently pexrtc does not support transfer with role and pin arguments,
+    so monkey patch the pexrtc api to support this:
+*/
+PexRTC.prototype.transferParticipant = function(uuid, destination, role, pin) {
+    var self = this;
+    var command = "participants/" + uuid + "/transfer";
+    var params = {
+        'conference_alias': destination,
+        'role': role,
+        'pin': pin,
+    };
+    self.onLog("command: " + command + " params: " + JSON.stringify(params));
+    self.sendRequest(command, params);
+};
+
+function transfer() {
+    rtc.transferParticipant(pdtransferuuid.value, pdtransferdestination.value, pdtransferrole.value, pdtransferpin.value);
+}
 
 /* ~~~ SETUP AND TEARDOWN ~~~ */
 
@@ -497,8 +515,10 @@ function initialise(confnode, conf, userbw, username, userpin, req_source, flash
     // For participant details view
     pdname = document.getElementById('pdname');
     pddata = document.getElementById('pddata');
-    pdtransfer = document.getElementById('pdtransfer');
     pdtransferdestination = document.getElementById('pdtransferdestination');
+    pdtransferuuid = document.getElementById('pdtransferuuid');
+    pdtransferrole = document.getElementById('pdtransferrole');
+    pdtransferpin = document.getElementById('pdtransferpin');
 
     flash = flash_obj;
     if (flash) {

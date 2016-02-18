@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex, nofollow" />
 <script type="text/javascript" src="/static/webrtc/js/pexrtc.js"></script>
 <script type="text/javascript" src="webui.js"></script>
-<script type='text/javascript'>
+<script type="text/javascript">
 window.onload = function()
 {
     var url = window.location.href;
@@ -162,17 +162,44 @@ window.onload = function()
 
     <hr />
 
+
     <table>
         <tr><td><h3 id="pdname">Select a participant in the roster</h3></td></tr>
         <tr><td>
         <pre id="pddata"></pre>
         </td></tr>
         <tr><td>
+            Transfer
+        </td></tr>
+        <tr><td>
             <label>
-                Transfer destination
+                uuid
+                <input id="pdtransferuuid" disabled="disabled" />
+            </label>
+        </td></tr>
+        <tr><td>
+            <label>
+                destination
                 <input id="pdtransferdestination" />
             </label>
-            <input id="pdtransfer" type="button" value="Transfer" />
+        </td></tr>
+        <tr><td>
+            <label>
+                Role
+                <select id="pdtransferrole">
+                    <option value="host">host</option>
+                    <option value="guest">guest</option>
+                </select>
+            </label>
+        </td></tr>
+        <tr><td>
+            <label>
+                PIN
+                <input id="pdtransferpin" />
+            </label>
+        </td></tr>
+        <tr><td>
+            <input type="button" value="Transfer" onclick="transfer()" />
         </td></tr>
         <tr><td>
         </td></tr>
