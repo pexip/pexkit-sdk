@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <script>
+        function init() {
+            navigator.getUserMedia = (navigator.getUserMedia ||
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia ||
+                navigator.msGetUserMedia);
+
+            var url = window.URL || window.webkitURL || window.mozURL;
+            var constraints = {
+                video: true,
+                audio: true,
+            };
+
+            if (window.AudioContext) {
+                var audioContext = new window.AudioContext();
+                var analyser = audioContext.createAnalyser();
+                analyser.fftSize = 1024;
+                analyser.smoothingTimeConstant = 0.5;
+            }
+
+            navigator.getUserMedia(constraints,
+                function(localMediaStream) {
+                    videoPreview.src = url.createObjectURL(localMediaStream);
+
+                    if (window.AudioContext) {
+                        try {
+                            mediaStreamSource = audioContext.createMediaStreamSource(localMediaStream);
+                            mediaStreamSource.connect(analyser);
+
+                            console.log('Creating WebRTC audio interval');
+
+                            window.setInterval(function() {
+                                if (audioContext.state === 'suspended') {
+                                    audioContext.resume();
+                                }
+                                var array = new Uint8Array(analyser.frequencyBinCount);
+                                analyser.getByteFrequencyData(array);
+                                var values = 0;
+
+                                var length = array.length;
+                                for (var i = 0; i < length; i++) {
+                                    values += array[i];
+                                }
+                                audioLevel.style.width = Math.min(100, values / length) + '%';
+                            }, 100);
+
+                            analyser.disconnect();
+                        } catch (e) {
+                            console.log('Failed to create media stream source for audio context', e);
+                        }
+                    }
+                },
+                function(err) {
+                    alert('getUserMedia failed, see console for details');
+                    console.log(err);
+                }
+            );
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <video id="videoPreview" autoplay muted style="width: 512px"></video>
+    <div style="width: 512px; background-color: #a00; ">
+        <div id="audioLevel" style="height: 10px; background-color: #0a0; transition: width 0.1s linear">
+        </div>
+    </div>
+</body>
+
+</html>
