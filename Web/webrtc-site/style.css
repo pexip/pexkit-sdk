@@ -163,7 +163,7 @@ body {
   font-size: 0.75em;
 }
 
-.participants .mute-checkbox {
+.participants .mute-checkbox, .participants .disconnect-button {
     float: right;
     margin-right: 10px;
 }

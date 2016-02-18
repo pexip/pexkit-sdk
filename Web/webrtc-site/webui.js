@@ -295,12 +295,18 @@ function createMuteCallback(uuid, checkbox) {
     };
 }
 
+function createDisconnectCallback(uuid) {
+    return function() {
+        rtc.disconnectParticipant(uuid);
+    };
+}
+
 function updateRosterList(roster) {
     rosterlist.removeChild(rosterul);
     rosterul = document.createElement("ul");
     rosterlist.appendChild(rosterul);
 
-    var h2, subtitle, surtitle, muteCheckbox,
+    var h2, subtitle, surtitle, muteCheckbox, disconnectButton,
         state = "";
     if (roster.length > 0 && 'role' in roster[0]) {
         h2 = document.createElement("h2");
@@ -322,6 +328,13 @@ function updateRosterList(roster) {
         }
 
         var li = document.createElement("li");
+
+        disconnectButton = document.createElement("input");
+        disconnectButton.type = 'button';
+        disconnectButton.value = 'x';
+        disconnectButton.classList.add('disconnect-button');
+        disconnectButton.onclick = createDisconnectCallback(roster[i].uuid);
+        li.appendChild(disconnectButton);
 
         muteCheckbox = document.createElement("input");
         muteCheckbox.type = 'checkbox';
