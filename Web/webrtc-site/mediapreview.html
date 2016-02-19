@@ -5,18 +5,39 @@
     <meta charset="utf-8">
     <title></title>
 
-    <script>
-        function init() {
-            navigator.getUserMedia = (navigator.getUserMedia ||
-                navigator.webkitGetUserMedia ||
-                navigator.mozGetUserMedia ||
-                navigator.msGetUserMedia);
+    <style>
+        body {
+            font-family: sans-serif;
+        }
 
-            var url = window.URL || window.webkitURL || window.mozURL;
-            var constraints = {
-                video: true,
-                audio: true,
-            };
+        #modal {
+            background-color: black;
+            color: white;
+            opacity: .8;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            line-height: 100%;
+            padding-top: 20%;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        navigator.getUserMedia = (navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
+
+        var url = window.URL || window.webkitURL || window.mozURL;
+
+        var noCameraPoster =
+            'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PHN2ZyB3aWR0aD0iMjQwLjAwMDAwMDAwMDAwMDAzIiBoZWlnaHQ9IjEzNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gPGc+ICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+ICA8cmVjdCBpZD0ic3ZnXzMiIGhlaWdodD0iMTM1IiB3aWR0aD0iMjQwIiB5PSIwIiB4PSIwIiBzdHJva2UtbGluZWNhcD0ibnVsbCIgc3Ryb2tlLWxpbmVqb2luPSJudWxsIiBzdHJva2UtZGFzaGFycmF5PSJudWxsIiBzdHJva2Utd2lkdGg9Im51bGwiIGZpbGw9IiMwMDAwMDAiLz4gIDxwYXRoIGZpbGw9IiNmZmZmZmYiIGlkPSJzdmdfMiIgZD0ibTE0NC44OTg0MzgsNTQuMzk1NTU5bC0xMC40ODM1NTMsMTAuNDgzNTUzbDAsLTkuMTczMTA5YzAsLTEuNDQxNDg5IC0xLjE3OTQsLTIuNjIwODg4IC0yLjYyMDg4OCwtMi42MjA4ODhsLTE2LjE5NzA4OSwwbDI5LjMwMTUzLDI5LjMwMTUzbDAsLTI3Ljk5MTA4NnptLTQ2LjQ2ODM0OCwtMTEuNzkzOTk3bC0zLjMyODUyOCwzLjMyODUyOGw3LjE1NTAyNSw3LjE1NTAyNWwtMS45MTMyNDgsMGMtMS40NDE0ODksMCAtMi42MjA4ODgsMS4xNzk0IC0yLjYyMDg4OCwyLjYyMDg4OGwwLDI2LjIwODg4MmMwLDEuNDQxNDg5IDEuMTc5NCwyLjYyMDg4OCAyLjYyMDg4OCwyLjYyMDg4OGwzMS40NTA2NTksMGMwLjU1MDM4NywwIDEuMDIyMTQ2LC0wLjIwOTY3MSAxLjQxNTI4LC0wLjQ3MTc2bDguMzYwNjMzLDguMzM0NDI1bDMuMzI4NTI4LC0zLjMyODUyOGwtNDYuNDY4MzQ4LC00Ni40NjgzNDh6Ii8+IDwvZz48L3N2Zz4=';
+
+        function getWebrtcUserMedia() {
+            modal.textContent = 'Please allow access to your camera and microphone';
 
             if (window.AudioContext) {
                 var audioContext = new window.AudioContext();
@@ -25,9 +46,43 @@
                 analyser.smoothingTimeConstant = 0.5;
             }
 
+            videoPreview.poster = noCameraPoster;
+
+            function videoEnded() {
+                videoPreview.src = '';
+                videoPreview.poster = noCameraPoster;
+            }
+            videoPreview.onended = videoEnded;
+            videoPreview.onplay = function() {
+                this.poster = null;
+            }
+
+            var constraints = {
+                video: {
+                    optional: [{
+                        minWidth: 320
+                    }, {
+                        minWidth: 640
+                    }, {
+                        minWidth: 1024
+                    }, {
+                        minWidth: 1280
+                    }]
+                },
+                audio: true,
+            };
+
             navigator.getUserMedia(constraints,
                 function(localMediaStream) {
+                    modal.style.display = 'none';
                     videoPreview.src = url.createObjectURL(localMediaStream);
+
+                    var videoStream = localMediaStream.getVideoTracks().shift();
+                    if (videoStream) {
+                        videoStream.onended = videoEnded;
+                    } else {
+                        videoEnded();
+                    }
 
                     if (window.AudioContext) {
                         try {
@@ -58,20 +113,31 @@
                     }
                 },
                 function(err) {
-                    alert('getUserMedia failed, see console for details');
                     console.log(err);
+                    modal.style.color = '#c00';
+                    modal.textContent = 'Unable to access your camera and/or microphone';
                 }
             );
+        }
+
+        function init() {
+            if (navigator.getUserMedia) {
+                getWebrtcUserMedia();
+            }
         }
     </script>
 </head>
 
 <body onload="init()">
+    <h2>Video Preview</h2>
     <video id="videoPreview" autoplay muted style="width: 512px"></video>
+    <h2>Audio Level Indication</h2>
     <div style="width: 512px; background-color: #a00; ">
-        <div id="audioLevel" style="height: 10px; background-color: #0a0; transition: width 0.1s linear">
+        <div id="audioLevel" style="width: 0; height: 10px; background-color: #0a0; transition: width 0.1s linear">
         </div>
     </div>
+
+    <div id="modal"></div>
 </body>
 
 </html>
