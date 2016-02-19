@@ -17,22 +17,22 @@ window.onload = function()
     if ((is_chrome)&&(is_safari)) {is_safari=false;}
 
     var id_form = document.getElementById('id_form');
-    if (is_safari || is_explorer) {
-        id_form.action = "conference-flash.html";
-    }   
+    // if (is_safari || is_explorer) {
+    //     id_form.action = "conference-flash.html";
+    // }
 
     var id_join_pres = document.getElementById('id_join_pres');
     if (!is_chrome) {
         id_join_pres.hidden = true;
     }
- 
+
     var bw;
     if (navigator.userAgent.indexOf("Mobile") == -1) {
         bw = "1280";
     } else {
         bw = "192";
     }
-    
+
     var id_bandwidth = document.getElementById('id_bandwidth');
     for (var i = 0; i < id_bandwidth.children.length; i++) {
         if (id_bandwidth.children[i].value == bw) {
@@ -51,17 +51,18 @@ window.onload = function()
 <div id="container" class="site">
     <!-- Header -->
     <header id="header" class="branding" role="banner">
-        
+
         <img src="img/logo.png" alt="Pexip">
         <h1>Infinity</h1>
-        
+
     </header>
     <!-- END Header -->
 
     <!-- Content -->
-    
+
   <div id="maincontent" class="main site join">
-    <form id="id_form" action="conference.html" method="get">
+    <!-- <form id="id_form" action="conference.html" method="get"> -->
+    <form id="id_form" action="mediapreview.html" method="get">
         <label for="id_alias" class="vh">Enter the conference alias</label>
         <input type="text" value="" name="alias" id="id_alias" placeholder="Enter the conference alias" required class="webrtcinput">
 

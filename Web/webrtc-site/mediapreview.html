@@ -139,15 +139,18 @@
         }
 
         window.flash_is_ready = function() {
-            console.log("FLASH READT")
             getFlashUserMedia(document.getElementById('flashVideoPreview'));
         }
 
+        var connectUrl;
+
         function init() {
             if (navigator.getUserMedia) {
+                connectUrl = 'conference.html' + window.location.search;
                 videoPlaceholder.innerHTML = '<video id="videoPreview" autoplay muted width="512"></video>';
                 getWebrtcUserMedia(videoPreview);
             } else {
+                connectUrl = 'conference-flash.html' + window.location.search;
                 swfobject.embedSWF(
                     '/static/webrtc/flash/PexVideo.swf',
                     'videoPlaceholder',
@@ -181,6 +184,11 @@
     <div style="width: 512px; background-color: #a00; ">
         <div id="audioLevel" style="width: 0; height: 10px; background-color: #0a0; transition: width 0.1s linear">
         </div>
+    </div>
+
+    <div style="margin: 5em;">
+        <input type="button" onclick="window.location.href = 'index.html'" value="Cancel" />
+        <input type="button" onclick="window.location.href = connectUrl" value="Connect" />
     </div>
 
     <div id="modal"></div>
