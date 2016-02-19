@@ -11,6 +11,7 @@
         }
 
         #modal {
+            display: none;
             background-color: black;
             color: white;
             opacity: .8;
@@ -25,6 +26,7 @@
         }
     </style>
 
+    <script type="text/javascript" src="swfobject.js"></script>
     <script>
         navigator.getUserMedia = (navigator.getUserMedia ||
             navigator.webkitGetUserMedia ||
@@ -36,9 +38,7 @@
         var noCameraPoster =
             'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PHN2ZyB3aWR0aD0iMjQwLjAwMDAwMDAwMDAwMDAzIiBoZWlnaHQ9IjEzNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gPGc+ICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+ICA8cmVjdCBpZD0ic3ZnXzMiIGhlaWdodD0iMTM1IiB3aWR0aD0iMjQwIiB5PSIwIiB4PSIwIiBzdHJva2UtbGluZWNhcD0ibnVsbCIgc3Ryb2tlLWxpbmVqb2luPSJudWxsIiBzdHJva2UtZGFzaGFycmF5PSJudWxsIiBzdHJva2Utd2lkdGg9Im51bGwiIGZpbGw9IiMwMDAwMDAiLz4gIDxwYXRoIGZpbGw9IiNmZmZmZmYiIGlkPSJzdmdfMiIgZD0ibTE0NC44OTg0MzgsNTQuMzk1NTU5bC0xMC40ODM1NTMsMTAuNDgzNTUzbDAsLTkuMTczMTA5YzAsLTEuNDQxNDg5IC0xLjE3OTQsLTIuNjIwODg4IC0yLjYyMDg4OCwtMi42MjA4ODhsLTE2LjE5NzA4OSwwbDI5LjMwMTUzLDI5LjMwMTUzbDAsLTI3Ljk5MTA4NnptLTQ2LjQ2ODM0OCwtMTEuNzkzOTk3bC0zLjMyODUyOCwzLjMyODUyOGw3LjE1NTAyNSw3LjE1NTAyNWwtMS45MTMyNDgsMGMtMS40NDE0ODksMCAtMi42MjA4ODgsMS4xNzk0IC0yLjYyMDg4OCwyLjYyMDg4OGwwLDI2LjIwODg4MmMwLDEuNDQxNDg5IDEuMTc5NCwyLjYyMDg4OCAyLjYyMDg4OCwyLjYyMDg4OGwzMS40NTA2NTksMGMwLjU1MDM4NywwIDEuMDIyMTQ2LC0wLjIwOTY3MSAxLjQxNTI4LC0wLjQ3MTc2bDguMzYwNjMzLDguMzM0NDI1bDMuMzI4NTI4LC0zLjMyODUyOGwtNDYuNDY4MzQ4LC00Ni40NjgzNDh6Ii8+IDwvZz48L3N2Zz4=';
 
-        function getWebrtcUserMedia() {
-            modal.textContent = 'Please allow access to your camera and microphone';
-
+        function getWebrtcUserMedia(videoElement) {
             if (window.AudioContext) {
                 var audioContext = new window.AudioContext();
                 var analyser = audioContext.createAnalyser();
@@ -46,14 +46,14 @@
                 analyser.smoothingTimeConstant = 0.5;
             }
 
-            videoPreview.poster = noCameraPoster;
+            videoElement.poster = noCameraPoster;
 
             function videoEnded() {
-                videoPreview.src = '';
-                videoPreview.poster = noCameraPoster;
+                videoElement.src = '';
+                videoElement.poster = noCameraPoster;
             }
-            videoPreview.onended = videoEnded;
-            videoPreview.onplay = function() {
+            videoElement.onended = videoEnded;
+            videoElement.onplay = function() {
                 this.poster = null;
             }
 
@@ -72,10 +72,12 @@
                 audio: true,
             };
 
+            modal.textContent = 'Please allow access to your camera and microphone';
+            modal.style.display = 'block';
             navigator.getUserMedia(constraints,
                 function(localMediaStream) {
                     modal.style.display = 'none';
-                    videoPreview.src = url.createObjectURL(localMediaStream);
+                    videoElement.src = url.createObjectURL(localMediaStream);
 
                     var videoStream = localMediaStream.getVideoTracks().shift();
                     if (videoStream) {
@@ -120,9 +122,50 @@
             );
         }
 
+        function getFlashUserMedia(flashElement) {
+            flashElement.setSelfviewRatio(1);
+            flashElement.initCamera(false);
+            flashElement.initMicrophone(false);
+            flashElement.showSelfview();
+
+            var flashMicrophoneInterval = window.setInterval(function() {
+                try {
+                    var mediaStats = flashElement.getMediaStatistics();
+                    audioLevel.style.width = Math.min(100, mediaStats.Outgoing.Audio.Level) + '%';
+                } catch (e) {
+                    window.clearInterval(flashMicrophoneInterval);
+                }
+            }, 100);
+        }
+
+        window.flash_is_ready = function() {
+            console.log("FLASH READT")
+            getFlashUserMedia(document.getElementById('flashVideoPreview'));
+        }
+
         function init() {
             if (navigator.getUserMedia) {
-                getWebrtcUserMedia();
+                videoPlaceholder.innerHTML = '<video id="videoPreview" autoplay muted width="512"></video>';
+                getWebrtcUserMedia(videoPreview);
+            } else {
+                swfobject.embedSWF(
+                    '/static/webrtc/flash/PexVideo.swf',
+                    'videoPlaceholder',
+                    512,
+                    288,
+                    '11.1.0',
+                    'playerProductInstall.swf', {}, {
+                        quality: 'high',
+                        bgcolor: '#262626',
+                        allowscriptaccess: 'always',
+                        allowfullscreen: 'true',
+                        wmode: 'transparent',
+                        scale: 'exactFit',
+                    }, {
+                        id: 'flashVideoPreview',
+                        name: 'PexVideo',
+                        align: 'middle',
+                    });
             }
         }
     </script>
@@ -130,8 +173,11 @@
 
 <body onload="init()">
     <h2>Video Preview</h2>
-    <video id="videoPreview" autoplay muted style="width: 512px"></video>
+
+    <div id="videoPlaceholder"></div>
+
     <h2>Audio Level Indication</h2>
+
     <div style="width: 512px; background-color: #a00; ">
         <div id="audioLevel" style="width: 0; height: 10px; background-color: #0a0; transition: width 0.1s linear">
         </div>
