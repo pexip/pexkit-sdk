@@ -28,7 +28,12 @@
 
     <script type="text/javascript" src="swfobject.js"></script>
     <script>
-        navigator.getUserMedia = (navigator.getUserMedia ||
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+        navigator.getUserMedia = (
+            navigator.getUserMedia ||
             navigator.webkitGetUserMedia ||
             navigator.mozGetUserMedia ||
             navigator.msGetUserMedia);
@@ -38,25 +43,57 @@
         var noCameraPoster =
             'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PHN2ZyB3aWR0aD0iMjQwLjAwMDAwMDAwMDAwMDAzIiBoZWlnaHQ9IjEzNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gPGc+ICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+ICA8cmVjdCBpZD0ic3ZnXzMiIGhlaWdodD0iMTM1IiB3aWR0aD0iMjQwIiB5PSIwIiB4PSIwIiBzdHJva2UtbGluZWNhcD0ibnVsbCIgc3Ryb2tlLWxpbmVqb2luPSJudWxsIiBzdHJva2UtZGFzaGFycmF5PSJudWxsIiBzdHJva2Utd2lkdGg9Im51bGwiIGZpbGw9IiMwMDAwMDAiLz4gIDxwYXRoIGZpbGw9IiNmZmZmZmYiIGlkPSJzdmdfMiIgZD0ibTE0NC44OTg0MzgsNTQuMzk1NTU5bC0xMC40ODM1NTMsMTAuNDgzNTUzbDAsLTkuMTczMTA5YzAsLTEuNDQxNDg5IC0xLjE3OTQsLTIuNjIwODg4IC0yLjYyMDg4OCwtMi42MjA4ODhsLTE2LjE5NzA4OSwwbDI5LjMwMTUzLDI5LjMwMTUzbDAsLTI3Ljk5MTA4NnptLTQ2LjQ2ODM0OCwtMTEuNzkzOTk3bC0zLjMyODUyOCwzLjMyODUyOGw3LjE1NTAyNSw3LjE1NTAyNWwtMS45MTMyNDgsMGMtMS40NDE0ODksMCAtMi42MjA4ODgsMS4xNzk0IC0yLjYyMDg4OCwyLjYyMDg4OGwwLDI2LjIwODg4MmMwLDEuNDQxNDg5IDEuMTc5NCwyLjYyMDg4OCAyLjYyMDg4OCwyLjYyMDg4OGwzMS40NTA2NTksMGMwLjU1MDM4NywwIDEuMDIyMTQ2LC0wLjIwOTY3MSAxLjQxNTI4LC0wLjQ3MTc2bDguMzYwNjMzLDguMzM0NDI1bDMuMzI4NTI4LC0zLjMyODUyOGwtNDYuNDY4MzQ4LC00Ni40NjgzNDh6Ii8+IDwvZz48L3N2Zz4=';
 
-        function getWebrtcUserMedia(videoElement) {
-            if (window.AudioContext) {
-                var audioContext = new window.AudioContext();
-                var analyser = audioContext.createAnalyser();
-                analyser.fftSize = 1024;
-                analyser.smoothingTimeConstant = 0.5;
+        if (window.AudioContext) {
+            var audioContext = new window.AudioContext();
+            var analyser = audioContext.createAnalyser();
+            analyser.fftSize = 1024;
+            analyser.smoothingTimeConstant = 0.5;
+        }
+
+        function changeUserMedia() { 
+            var camId = $('camId').options[$('camId').selectedIndex].value;
+            var micId = $('micId').options[$('micId').selectedIndex].value;
+            getUserMedia(camId, micId);
+        }
+
+        var releaseUserMedia;
+
+        function enumerateWebrtcDevices() {
+            if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                navigator.mediaDevices.enumerateDevices().then(function(devices) {
+                    devices.forEach(function(device) {
+                        var option = document.createElement("option");
+                        option.value = device.deviceId;
+                        option.innerHTML = device.label;
+                        switch (device.kind) {
+                            case 'videoinput':
+                                camId.appendChild(option);
+                                break;
+                            case 'audioinput':
+                                micId.appendChild(option);
+                                break;
+                            default:
+                        }
+                    });
+                })
+            }
+        }
+
+        function getWebrtcUserMedia(camId, micId) {
+            if (releaseUserMedia) {
+                releaseUserMedia();
             }
 
-            videoElement.poster = noCameraPoster;
+            $('videoPreview').poster = noCameraPoster;
 
             function videoEnded() {
-                videoElement.src = '';
-                videoElement.poster = noCameraPoster;
+                $('videoPreview').src = '';
+                $('videoPreview').poster = noCameraPoster;
             }
-            videoElement.onended = videoEnded;
-            videoElement.onplay = function() {
-                this.poster = null;
+            $('videoPreview').onended = videoEnded;
+            $('videoPreview').onplay = function() {
+                this.poster = '';
             }
-
             var constraints = {
                 video: {
                     optional: [{
@@ -69,15 +106,32 @@
                         minWidth: 1280
                     }]
                 },
-                audio: true,
+                audio: {
+                    optional: []
+                }
             };
+            if (camId) {
+                constraints.video.optional.push({
+                    sourceId: camId
+                });
+            }
+            if (micId) {
+                constraints.audio.optional.push({
+                    sourceId: micId
+                });
+            }
 
             modal.textContent = 'Please allow access to your camera and microphone';
             modal.style.display = 'block';
             navigator.getUserMedia(constraints,
                 function(localMediaStream) {
                     modal.style.display = 'none';
-                    videoElement.src = url.createObjectURL(localMediaStream);
+                    $('videoPreview').src = url.createObjectURL(localMediaStream);
+
+                    if (window.enumerateDevices) {
+                        enumerateDevices();
+                        delete window.enumerateDevices;
+                    }
 
                     var videoStream = localMediaStream.getVideoTracks().shift();
                     if (videoStream) {
@@ -93,7 +147,7 @@
 
                             console.log('Creating WebRTC audio interval');
 
-                            window.setInterval(function() {
+                            audioInterval = window.setInterval(function() {
                                 if (audioContext.state === 'suspended') {
                                     audioContext.resume();
                                 }
@@ -113,6 +167,28 @@
                             console.log('Failed to create media stream source for audio context', e);
                         }
                     }
+
+                    releaseUserMedia = function _releaseWebrtcUserMedia() {
+                        console.log('Stopping audio level indicator');
+                        window.clearInterval(audioInterval)
+                        if (mediaStreamSource) {
+                            mediaStreamSource.disconnect();
+                            mediaStreamSource = null;
+                        }
+                        if (analyser) {
+                            analyser.disconnect();
+                        }
+
+                        console.log('Stopping local media stream');
+                        if (localMediaStream) {
+                            var tracks = localMediaStream.getTracks();
+                            for (var i = 0; i < tracks.length; i++) {
+                                tracks[i].stop();
+                            }
+                        }
+
+                        delete window.releaseUserMedia;
+                    };
                 },
                 function(err) {
                     console.log(err);
@@ -122,25 +198,47 @@
             );
         }
 
-        function getFlashUserMedia(flashElement) {
-            flashElement.setSelfviewRatio(1);
-            flashElement.initCamera(false);
-            flashElement.initMicrophone(false);
-            flashElement.showSelfview();
+        function enumerateFlashDevices() {
+            $('flashVideoPreview').enumerateVideoSources().forEach(function(label, id) {
+                var option = document.createElement("option");
+                option.value = id;
+                option.innerHTML = label;
+                $('camId').appendChild(option);
+            });
+            $('flashVideoPreview').enumerateAudioSources().forEach(function(label, id) {
+                var option = document.createElement("option");
+                option.value = id;
+                option.innerHTML = label;
+                $('micId').appendChild(option);
+            });
+        }
+
+        function getFlashUserMedia(camId, micId) {
+            $('flashVideoPreview').setSelfviewRatio(1);
+            $('flashVideoPreview').initCamera(camId);
+            $('flashVideoPreview').initMicrophone(micId);
+            $('flashVideoPreview').showSelfview();
+        }
+
+        function releaseFlashUserMedia() {
+            $('flashVideoPreview').hideSelfview();
+        }
+
+        window.flash_is_ready = function _flashIsReady() {
+            enumerateFlashDevices();
+            getFlashUserMedia(false, false);
 
             var flashMicrophoneInterval = window.setInterval(function() {
                 try {
-                    var mediaStats = flashElement.getMediaStatistics();
-                    audioLevel.style.width = Math.min(100, mediaStats.Outgoing.Audio.Level) + '%';
+                    var mediaStats = $('flashVideoPreview').getMediaStatistics();
+                    $('audioLevel').style.width = Math.min(100, mediaStats.Outgoing.Audio.Level) + '%';
                 } catch (e) {
                     window.clearInterval(flashMicrophoneInterval);
                 }
             }, 100);
-        }
 
-        window.flash_is_ready = function() {
-            getFlashUserMedia(document.getElementById('flashVideoPreview'));
-        }
+            delete window.flash_is_ready;
+        };
 
         var connectUrl;
 
@@ -148,7 +246,9 @@
             if (navigator.getUserMedia) {
                 connectUrl = 'conference.html' + window.location.search;
                 videoPlaceholder.innerHTML = '<video id="videoPreview" autoplay muted width="512"></video>';
-                getWebrtcUserMedia(videoPreview);
+                enumerateDevices = enumerateWebrtcDevices;
+                getUserMedia = getWebrtcUserMedia;
+                getUserMedia();
             } else {
                 connectUrl = 'conference-flash.html' + window.location.search;
                 swfobject.embedSWF(
@@ -169,6 +269,7 @@
                         name: 'PexVideo',
                         align: 'middle',
                     });
+                getUserMedia = getFlashUserMedia;
             }
         }
     </script>
@@ -176,11 +277,15 @@
 
 <body onload="init()">
     <h2>Video Preview</h2>
-
+    <div>
+        <select id="camId" onchange="changeUserMedia()"></select>
+    </div>
     <div id="videoPlaceholder"></div>
 
     <h2>Audio Level Indication</h2>
-
+    <div>
+        <select id="micId" onchange="changeUserMedia()"></select>
+    </div>
     <div style="width: 512px; background-color: #a00; ">
         <div id="audioLevel" style="width: 0; height: 10px; background-color: #0a0; transition: width 0.1s linear">
         </div>
