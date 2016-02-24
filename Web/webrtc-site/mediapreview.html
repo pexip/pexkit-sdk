@@ -28,9 +28,36 @@
 
     <script type="text/javascript" src="swfobject.js"></script>
     <script>
+        var noCameraPoster =
+            'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PHN2ZyB3aWR0aD0iMjQwLjAwMDAwMDAwMDAwMDAzIiBoZWlnaHQ9IjEzNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gPGc+ICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+ICA8cmVjdCBpZD0ic3ZnXzMiIGhlaWdodD0iMTM1IiB3aWR0aD0iMjQwIiB5PSIwIiB4PSIwIiBzdHJva2UtbGluZWNhcD0ibnVsbCIgc3Ryb2tlLWxpbmVqb2luPSJudWxsIiBzdHJva2UtZGFzaGFycmF5PSJudWxsIiBzdHJva2Utd2lkdGg9Im51bGwiIGZpbGw9IiMwMDAwMDAiLz4gIDxwYXRoIGZpbGw9IiNmZmZmZmYiIGlkPSJzdmdfMiIgZD0ibTE0NC44OTg0MzgsNTQuMzk1NTU5bC0xMC40ODM1NTMsMTAuNDgzNTUzbDAsLTkuMTczMTA5YzAsLTEuNDQxNDg5IC0xLjE3OTQsLTIuNjIwODg4IC0yLjYyMDg4OCwtMi42MjA4ODhsLTE2LjE5NzA4OSwwbDI5LjMwMTUzLDI5LjMwMTUzbDAsLTI3Ljk5MTA4NnptLTQ2LjQ2ODM0OCwtMTEuNzkzOTk3bC0zLjMyODUyOCwzLjMyODUyOGw3LjE1NTAyNSw3LjE1NTAyNWwtMS45MTMyNDgsMGMtMS40NDE0ODksMCAtMi42MjA4ODgsMS4xNzk0IC0yLjYyMDg4OCwyLjYyMDg4OGwwLDI2LjIwODg4MmMwLDEuNDQxNDg5IDEuMTc5NCwyLjYyMDg4OCAyLjYyMDg4OCwyLjYyMDg4OGwzMS40NTA2NTksMGMwLjU1MDM4NywwIDEuMDIyMTQ2LC0wLjIwOTY3MSAxLjQxNTI4LC0wLjQ3MTc2bDguMzYwNjMzLDguMzM0NDI1bDMuMzI4NTI4LC0zLjMyODUyOGwtNDYuNDY4MzQ4LC00Ni40NjgzNDh6Ii8+IDwvZz48L3N2Zz4=';
+
         function $(id) {
             return document.getElementById(id);
         }
+
+        ////////////////////////////////////
+        // GENERIC
+        ////////////////////////////////////
+
+        var getUserMedia,
+            releaseUserMedia;
+
+        function changeUserMedia() { 
+            var camId = $('camId').options[$('camId').selectedIndex].value;
+            var micId = $('micId').options[$('micId').selectedIndex].value;
+            connectUrlExtra = (camId ? '&camId=' + camId : '') + (micId ? '&micId=' + micId : '');
+
+            console.log('Changing input devices', camId, micId);
+
+            if (releaseUserMedia) {
+                releaseUserMedia();
+            }
+            getUserMedia(camId, micId)
+        }
+
+        ////////////////////////////////////
+        // WEBRTC
+        ////////////////////////////////////
 
         navigator.getUserMedia = (
             navigator.getUserMedia ||
@@ -40,26 +67,24 @@
 
         var url = window.URL || window.webkitURL || window.mozURL;
 
-        var noCameraPoster =
-            'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PHN2ZyB3aWR0aD0iMjQwLjAwMDAwMDAwMDAwMDAzIiBoZWlnaHQ9IjEzNSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gPGc+ICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+ICA8cmVjdCBpZD0ic3ZnXzMiIGhlaWdodD0iMTM1IiB3aWR0aD0iMjQwIiB5PSIwIiB4PSIwIiBzdHJva2UtbGluZWNhcD0ibnVsbCIgc3Ryb2tlLWxpbmVqb2luPSJudWxsIiBzdHJva2UtZGFzaGFycmF5PSJudWxsIiBzdHJva2Utd2lkdGg9Im51bGwiIGZpbGw9IiMwMDAwMDAiLz4gIDxwYXRoIGZpbGw9IiNmZmZmZmYiIGlkPSJzdmdfMiIgZD0ibTE0NC44OTg0MzgsNTQuMzk1NTU5bC0xMC40ODM1NTMsMTAuNDgzNTUzbDAsLTkuMTczMTA5YzAsLTEuNDQxNDg5IC0xLjE3OTQsLTIuNjIwODg4IC0yLjYyMDg4OCwtMi42MjA4ODhsLTE2LjE5NzA4OSwwbDI5LjMwMTUzLDI5LjMwMTUzbDAsLTI3Ljk5MTA4NnptLTQ2LjQ2ODM0OCwtMTEuNzkzOTk3bC0zLjMyODUyOCwzLjMyODUyOGw3LjE1NTAyNSw3LjE1NTAyNWwtMS45MTMyNDgsMGMtMS40NDE0ODksMCAtMi42MjA4ODgsMS4xNzk0IC0yLjYyMDg4OCwyLjYyMDg4OGwwLDI2LjIwODg4MmMwLDEuNDQxNDg5IDEuMTc5NCwyLjYyMDg4OCAyLjYyMDg4OCwyLjYyMDg4OGwzMS40NTA2NTksMGMwLjU1MDM4NywwIDEuMDIyMTQ2LC0wLjIwOTY3MSAxLjQxNTI4LC0wLjQ3MTc2bDguMzYwNjMzLDguMzM0NDI1bDMuMzI4NTI4LC0zLjMyODUyOGwtNDYuNDY4MzQ4LC00Ni40NjgzNDh6Ii8+IDwvZz48L3N2Zz4=';
+        var analyzer,
+            audioContext,
+            audioInterval,
+            mediaStreamSource,
+            localMediaStream;
 
         if (window.AudioContext) {
-            var audioContext = new window.AudioContext();
-            var analyser = audioContext.createAnalyser();
+            audioContext = new window.AudioContext();
+            analyser = audioContext.createAnalyser();
             analyser.fftSize = 1024;
             analyser.smoothingTimeConstant = 0.5;
         }
 
-        function changeUserMedia() { 
-            var camId = $('camId').options[$('camId').selectedIndex].value;
-            var micId = $('micId').options[$('micId').selectedIndex].value;
-            getUserMedia(camId, micId);
-        }
-
-        var releaseUserMedia;
+        var hasEnumeratedWebRtcDevices = false;
 
         function enumerateWebrtcDevices() {
-            if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+            if (!hasEnumeratedWebRtcDevices && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                hasEnumeratedWebRtcDevices = true;
                 navigator.mediaDevices.enumerateDevices().then(function(devices) {
                     devices.forEach(function(device) {
                         var option = document.createElement("option");
@@ -80,18 +105,16 @@
         }
 
         function getWebrtcUserMedia(camId, micId) {
-            if (releaseUserMedia) {
-                releaseUserMedia();
-            }
+            // $('videoPreview').poster = noCameraPoster;
 
-            $('videoPreview').poster = noCameraPoster;
-
-            function videoEnded() {
+            function videoEnded(e) {
+                console.log("Video ended", e)
                 $('videoPreview').src = '';
                 $('videoPreview').poster = noCameraPoster;
             }
             $('videoPreview').onended = videoEnded;
             $('videoPreview').onplay = function() {
+                console.log("Video playing")
                 this.poster = '';
             }
             var constraints = {
@@ -124,14 +147,13 @@
             modal.textContent = 'Please allow access to your camera and microphone';
             modal.style.display = 'block';
             navigator.getUserMedia(constraints,
-                function(localMediaStream) {
+                function(stream) {
+                    localMediaStream = stream;
+                    console.log('Got WebRTC local media stream', constraints, localMediaStream.getTracks());
                     modal.style.display = 'none';
                     $('videoPreview').src = url.createObjectURL(localMediaStream);
 
-                    if (window.enumerateDevices) {
-                        enumerateDevices();
-                        delete window.enumerateDevices;
-                    }
+                    enumerateWebrtcDevices();
 
                     var videoStream = localMediaStream.getVideoTracks().shift();
                     if (videoStream) {
@@ -142,10 +164,9 @@
 
                     if (window.AudioContext) {
                         try {
+                            console.log('Starting WebRTC audio level indicator');
                             mediaStreamSource = audioContext.createMediaStreamSource(localMediaStream);
                             mediaStreamSource.connect(analyser);
-
-                            console.log('Creating WebRTC audio interval');
 
                             audioInterval = window.setInterval(function() {
                                 if (audioContext.state === 'suspended') {
@@ -167,28 +188,6 @@
                             console.log('Failed to create media stream source for audio context', e);
                         }
                     }
-
-                    releaseUserMedia = function _releaseWebrtcUserMedia() {
-                        console.log('Stopping audio level indicator');
-                        window.clearInterval(audioInterval)
-                        if (mediaStreamSource) {
-                            mediaStreamSource.disconnect();
-                            mediaStreamSource = null;
-                        }
-                        if (analyser) {
-                            analyser.disconnect();
-                        }
-
-                        console.log('Stopping local media stream');
-                        if (localMediaStream) {
-                            var tracks = localMediaStream.getTracks();
-                            for (var i = 0; i < tracks.length; i++) {
-                                tracks[i].stop();
-                            }
-                        }
-
-                        delete window.releaseUserMedia;
-                    };
                 },
                 function(err) {
                     console.log(err);
@@ -197,6 +196,31 @@
                 }
             );
         }
+
+        function releaseWebrtcUserMedia() {
+            console.log('Stopping WebRTC audio level indicator');
+
+            window.clearInterval(audioInterval);
+
+            if (mediaStreamSource) {
+                mediaStreamSource.disconnect();
+                mediaStreamSource = null;
+            }
+            if (analyser) {
+                analyser.disconnect();
+            }
+
+            console.log('Releasing WebRTC local media stream');
+            if (localMediaStream) {
+                localMediaStream.getTracks().forEach(function(track) {
+                    track.stop();
+                });
+            }
+        };
+
+        ////////////////////////////////////
+        // FLASH
+        ////////////////////////////////////
 
         function enumerateFlashDevices() {
             $('flashVideoPreview').enumerateVideoSources().forEach(function(label, id) {
@@ -225,6 +249,8 @@
         }
 
         window.flash_is_ready = function _flashIsReady() {
+            getUserMedia = getFlashUserMedia;
+            releaseUserMedia = releaseFlashUserMedia;
             enumerateFlashDevices();
             getFlashUserMedia(false, false);
 
@@ -240,14 +266,25 @@
             delete window.flash_is_ready;
         };
 
-        var connectUrl;
+        ////////////////////////////////////
+        // INITIALIZATION STUFF
+        ////////////////////////////////////
+
+        var connectUrl,
+            connectUrlExtra;
 
         function init() {
             if (navigator.getUserMedia) {
                 connectUrl = 'conference.html' + window.location.search;
                 videoPlaceholder.innerHTML = '<video id="videoPreview" autoplay muted width="512"></video>';
-                enumerateDevices = enumerateWebrtcDevices;
-                getUserMedia = getWebrtcUserMedia;
+                getUserMedia = function(camId, micId) {
+                    // If we re-request media before it is released it usually fails,
+                    // so add a timeout to wait (since we do not have a callback to pin this on)
+                    window.setTimeout(function() {
+                        getWebrtcUserMedia(camId, micId);
+                    }, 500);
+                }
+                releaseUserMedia = releaseWebrtcUserMedia;
                 getUserMedia();
             } else {
                 connectUrl = 'conference-flash.html' + window.location.search;
@@ -269,7 +306,12 @@
                         name: 'PexVideo',
                         align: 'middle',
                     });
-                getUserMedia = getFlashUserMedia;
+            }
+        }
+
+        window.onbeforeunload = function() {
+            if (releaseUserMedia) {
+                releaseUserMedia();
             }
         }
     </script>
@@ -278,13 +320,17 @@
 <body onload="init()">
     <h2>Video Preview</h2>
     <div>
-        <select id="camId" onchange="changeUserMedia()"></select>
+        <select id="camId" onchange="changeUserMedia()">
+            <option selected="selected" value="">[Use browser default camera]</option>
+        </select>
     </div>
     <div id="videoPlaceholder"></div>
 
     <h2>Audio Level Indication</h2>
     <div>
-        <select id="micId" onchange="changeUserMedia()"></select>
+        <select id="micId" onchange="changeUserMedia()">
+            <option selected="selected" value="">[Use browser default microphone]</option>
+        </select>
     </div>
     <div style="width: 512px; background-color: #a00; ">
         <div id="audioLevel" style="width: 0; height: 10px; background-color: #0a0; transition: width 0.1s linear">
@@ -293,7 +339,7 @@
 
     <div style="margin: 5em;">
         <input type="button" onclick="window.location.href = 'index.html'" value="Cancel" />
-        <input type="button" onclick="window.location.href = connectUrl" value="Connect" />
+        <input type="button" onclick="window.location.href = connectUrl + connectUrlExtra" value="Connect" />
     </div>
 
     <div id="modal"></div>

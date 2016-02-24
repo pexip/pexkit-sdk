@@ -498,7 +498,7 @@ function connected(url) {
     }
 }
 
-function initialise(confnode, conf, userbw, username, userpin, req_source, flash_obj) {
+function initialise(confnode, conf, userbw, username, userpin, req_source, flash_obj, camId, micId) {
     video = document.getElementById("video");
     id_selfview = document.getElementById('id_selfview');
     id_muteaudio = document.getElementById('id_muteaudio');
@@ -530,6 +530,8 @@ function initialise(confnode, conf, userbw, username, userpin, req_source, flash
     source = req_source;
 
     rtc = new PexRTC();
+    rtc.video_source = camId;
+    rtc.audio_source = micId;
 
     window.addEventListener('beforeunload', finalise);
 

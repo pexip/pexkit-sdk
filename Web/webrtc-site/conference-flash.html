@@ -32,7 +32,7 @@ window.onload = function()
     var loadCheckInterval = setInterval(function (){
         var flash = document.getElementById('flashvideo');
         if (flash.startCall !== undefined) {
-            initialise(document.domain, qp['alias'], qp['bandwidth'], qp['name'], "", source, flash);
+            initialise(document.domain, qp['alias'], qp['bandwidth'], qp['name'], "", source, flash, qp['camId'], qp['micId']);
             clearInterval(loadCheckInterval);
         }
     }, 500);
