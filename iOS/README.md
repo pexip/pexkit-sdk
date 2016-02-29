@@ -31,6 +31,7 @@ symbols have been removed.
 
 ## Changelog
 
+ - 7.4.16 (PexKit-SDK-2016-02-29_v7.4.16) : Update for v12 requiring event id for presentation
  - 7.4.15 (PexKit-SDK-2016-01-13_v7.4.15) : Ignore cache-control for API requests
  - 7.4.14 (PexKit-SDK-2015-11-26_v7.4.14) : Fix orientation/flip camera issues
  - 7.4.13 (PexKit-SDK-2015-11-23_v7.4.13) : Fix mute in landscape, add GW call to cal scraper,
