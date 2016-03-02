@@ -68,7 +68,9 @@ function checkForBlockedPopup() {
     if (!presentation || typeof presentation.innerHeight === "undefined" || (presentation.innerHeight === 0 && presentation.innerWidth === 0)) {
         // Popups blocked
         presentationClosed();
-        flash_button = setInterval(function(){id_presentation.classList.toggle('active');}, 1000);
+        flash_button = setInterval(function() {
+            id_presentation.classList.toggle('active');
+        }, 1000);
     } else {
         id_presentation.textContent = trans['BUTTON_HIDEPRES'];
         presentation.document.title = decodeURIComponent(conference) + " presentation from " + presenter;
@@ -99,7 +101,9 @@ function createPresentationWindow() {
             presentation.document.write("</div>");
             presentation.document.write("</body></html>");
             presentation.addEventListener('beforeunload', presentationClosed);
-            presentation.addEventListener('resize', function() { userResized = true; });
+            presentation.addEventListener('resize', function() {
+                userResized = true;
+            });
             userResized = false;
         }
     }
@@ -186,7 +190,7 @@ function togglePresentation() {
 
 function goFullscreen() {
     if (!id_fullscreen.classList.contains("inactive")) {
-        video.goFullscreen = ( video.webkitRequestFullscreen || video.mozRequestFullScreen );
+        video.goFullscreen = (video.webkitRequestFullscreen || video.mozRequestFullScreen);
         video.goFullscreen();
     }
 }
@@ -201,6 +205,69 @@ function presentScreen() {
             rtc.present(null);
         }
     }
+}
+
+function presentImage(files) {
+    if (!id_screenshare.classList.contains("inactive")) {
+        if (!presenting) {
+            rtc.onScreenshareConnected = function(src) {
+                rtc.sendPresentationImage(files);
+                id_screenshare.textContent = trans.BUTTON_STOPSHARE;
+                presenting = true;
+            };
+            rtc.present('screen_http');
+        } else {
+            rtc.sendPresentationImage(files);
+        }
+    }
+}
+
+function dataURLtoBlob(dataURL) {
+    var byteString = atob(dataURL.split(',')[1]);
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return ab;
+}
+
+function processFileForPresentation(file) {
+    // Use the browser's image capabilities to scale and convert the uploaded image
+    // to make sure it's in jpeg format and 1280x720 resolution with correct boxing
+
+    var fileReader = new FileReader();
+    fileReader.onerror = function() {
+        console.log('Failed to read file: ' + fileReader.error.name + ': ' + fileReader.error.message);
+    };
+    fileReader.onload = function() {
+        var image = new Image();
+        image.onload = function() {
+            var canvas = document.createElement('canvas');
+            canvas.width = 1280;
+            canvas.height = 720;
+            var hRatio = canvas.width / image.width;
+            var vRatio = canvas.height / image.height;
+            var ratio = Math.min(hRatio, vRatio);
+            var dx = (canvas.width - image.width * ratio) / 2;
+            var dy = (canvas.height - image.height * ratio) / 2;
+            var dWidth = image.width * ratio;
+            var dHeight = image.height * ratio;
+            canvas.getContext('2d').drawImage(
+                image,
+                0, 0, image.width, image.height,
+                dx, dy, dWidth, dHeight);
+
+            presentImage({
+                files: [dataURLtoBlob(canvas.toDataURL('image/jpeg'))]
+            });
+        };
+        image.onerror = function(error) {
+            console.log('Failed to render image:', error);
+        };
+        image.src = fileReader.result;
+    };
+    fileReader.readAsDataURL(file);
 }
 
 function unpresentScreen(reason) {
