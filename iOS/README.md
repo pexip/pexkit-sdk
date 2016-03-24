@@ -31,7 +31,8 @@ symbols have been removed.
 
 ## Changelog
 
- - 7.5.0 (PexKit-SDK-2016-03-02_v7.5.0) : New WebRTC library and fixes for freeze in certain orientation
+ - 7.5.1 (PexKit-SDK-2016-03-24_v7.5.1)   : Add support for Auto protocol, re-build for Xcode 7.3
+ - 7.5.0 (PexKit-SDK-2016-03-02_v7.5.0)   : New WebRTC library and fixes for freeze in certain orientation
  - 7.4.16 (PexKit-SDK-2016-02-29_v7.4.16) : Update for v12 requiring event id for presentation
  - 7.4.15 (PexKit-SDK-2016-01-13_v7.4.15) : Ignore cache-control for API requests
  - 7.4.14 (PexKit-SDK-2015-11-26_v7.4.14) : Fix orientation/flip camera issues
