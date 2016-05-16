@@ -16,6 +16,7 @@ See [this issue](https://github.com/pexip/pexkit-sdk/issues/4) for more details
 
 ## Changelog
 
+  - PexKit-SDK-2016-05-16.aar  Fix issue with audioMute being connected to videoMute
   - PexKit-SDK-2016-01-03.aar  Updates to selfview aspect ratios, camera control and participant
                                object
   - PexKit-SDK-2015-12-16.aar  add audio/video mute and now use pristine.io webrtc libs
