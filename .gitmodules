@@ -1,3 +1,3 @@
 [submodule "Android/example"]
 	path = Android/example
-	url = git@github.com:pexip/pexkit-android-example
+	url = https://github.com/pexip/pexkit-android-example.git
