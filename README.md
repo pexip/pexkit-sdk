@@ -34,3 +34,7 @@ Report any bugs or issues to https://github.com/pexip/pexkit-sdk/issues
 
 Please read the LICENSE.txt file for each SDK platform.
 
+# Code of Conduct
+
+Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
+
