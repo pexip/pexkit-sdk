@@ -17,7 +17,7 @@ property on the conference object e.g.
 Currently supported resolutions are wqcif, p216, wcif, p448, p576 and
 hd - see the `Resolution` enum for more information.
 
-Be mindful of the device you are targetting when setting the
+Be mindful of the device you are targeting when setting the
 resolution as older devices e.g. iPhone 5 will struggle with the
 higher resolutions.
 
@@ -31,6 +31,8 @@ symbols have been removed.
 
 ## Changelog
 
+ - 7.5.3 (PexKit-SDK-2016-07-12_v7.5.3)   : Fix `isAudioOnly`, tighten up calendar scraping
+                                            to prevent erroneous PIN entry
  - 7.5.2 (PexKit-SDK-2016-07-07_v7.5.2)   : Add `isAudioOnly` to `Participant`, added `gotEventSourcePing` event
                                             for eventstream, added UUID to `presentation_start` event
  - 7.5.1 (PexKit-SDK-2016-03-24_v7.5.1)   : Add support for Auto protocol, re-build for Xcode 7.3
