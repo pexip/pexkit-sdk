@@ -31,6 +31,8 @@ symbols have been removed.
 
 ## Changelog
 
+ - 7.5.4 (PexKit-SDK-2016-07-19_v7.5.4)   : Minor fix for backwards compatibility on older event
+                                            messages
  - 7.5.3 (PexKit-SDK-2016-07-12_v7.5.3)   : Fix `isAudioOnly`, tighten up calendar scraping
                                             to prevent erroneous PIN entry
  - 7.5.2 (PexKit-SDK-2016-07-07_v7.5.2)   : Add `isAudioOnly` to `Participant`, added `gotEventSourcePing` event
