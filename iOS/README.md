@@ -1,5 +1,19 @@
 # PexKit for iOS
 
+## Certificate Handling
+
+As of PexKit 7.6.0, we are disabling the ability to accept self-signed
+and other "bad" certificates in preparation for the disabling of ATS
+by Apple in Jan 2017 and to align with industry best practice.  When you
+try to connect to a Pexip deployment running with a self-signed or
+otherwise "bad" certificate (expired, untrusted etc) you will receive
+a CertificateError in your completion for the request so the user can
+be informed of the problem.  There will be no exceptions.
+
+If your application has been running with ATS exceptions or disabled,
+this change will break your application and you are advised to deploy
+proper certificates.
+
 ## Hardware Acceleration
 
 As of 7.4.9 (03/11/2015) PexKit has enabled hardware acceleration.
@@ -31,6 +45,11 @@ symbols have been removed.
 
 ## Changelog
 
+ - 7.6.0 (PexKit-SDK-2016-07-19_v7.5.4)   : Prepartion for ATS disabling (see notes)
+                                            New ConferenceCallType enum and callType on conference object
+											Security fixes
+											remove parsing of display name and leave untouched
+											cleanups for deprecations in Swift 3
  - 7.5.4 (PexKit-SDK-2016-07-19_v7.5.4)   : Minor fix for backwards compatibility on older event
                                             messages
  - 7.5.3 (PexKit-SDK-2016-07-12_v7.5.3)   : Fix `isAudioOnly`, tighten up calendar scraping
