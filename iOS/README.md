@@ -45,7 +45,8 @@ symbols have been removed.
 
 ## Changelog
 
- - 7.6.0 (PexKit-SDK-2016-07-19_v7.5.4)   : Prepartion for ATS disabling (see notes)
+ - 7.7.1 (PexKit-SDK-2016-09-15_v7.7.1)   : Xcode 8 / Swift 2.3 compatibility and display name fixes
+ - 7.6.0 (PexKit-SDK-2016-09-09_v7.6.0)   : Prepartion for ATS disabling (see notes)
                                             New ConferenceCallType enum and callType on conference object
 											Security fixes
 											remove parsing of display name and leave untouched
