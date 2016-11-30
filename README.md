@@ -1,40 +1,30 @@
-# Pexip SDK
+# Pexip SDK - Changes for Developers
 
-The following SDKs allow you to enable your applications with all of
-the conferencing capabilities of the Pexip platform including but not
-limited to video, audio and chat messaging.
+We have reprioritised our efforts to focus on development of our
+native Pexip clients. In order to do this, we will no longer provide
+individual platform-specific SDKs for Android and iOS. This refocus of
+development effort will allow us to build a richer and more intuitive
+user experience that can be updated more frequently, and allow us to
+provide a unified feature set across all platforms, which will benefit
+both developers and end users.
 
-Documentation is provided with the SDK and there are also video
-tutorials on pexip.com e.g.
+We've seen that the vast majority of requests for SDKs are actually
+for customers wanting to build a branded application, so as part of
+this move we'll be providing a much easier way for customers to
+rebrand our existing clients.
 
-http://pexip.com/article/blog/how-make-your-own-videoconferencing-app
+For customers still wishing to build bespoke applications, we'll be
+moving towards an API-driven approach using our existing REST-based
+client API.  This is already well documented
+(https://docs.pexip.com/api_client/api_rest.htm), and we'll be adding
+to the documentation with more examples and sample code.
 
-More general documention on Pexip Infinity can be found at http://docs.pexip.com
-
-# IOS9 / Xcode 7
-
-Bitcode support is not currently enabled in this release of the SDK.
-Please disable bitcode in your "Build Settings" for your target.
-
-# Android Studio vs Eclipse
-
-For the Android examples, we use Android studio and gradle.  If you're
-using Eclipse ADT then you will need to add the following JAR files to
-your lib:
-
-1. [android-async-http](https://github.com/loopj/android-async-http) (try [MVN repository](http://mvnrepository.com/artifact/com.loopj.android/android-async-http/1.4.9) for a pre-built JAR file)
-1. [Spotify DNS](https://github.com/spotify/dns-java) and its dependencies (try [MVN repository](http://mvnrepository.com/artifact/com.spotify/dns/3.0.2) for a pre-built JAR file)
-1. [libjingle](https://github.com/pristineio/webrtc-android) and its dependencies (try [MVN repository](http://mvnrepository.com/artifact/io.pristine/libjingle) for a pre-built JAR file must be version: 10111)
-
-# Feedback
-
-Report any bugs or issues to https://github.com/pexip/pexkit-sdk/issues
-
-# License
-
-Please read the LICENSE.txt file for each SDK platform.
+Please reach out to your Pexip representative to be kept up to date on
+the latest changes and updates.
 
 # Code of Conduct
 
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
+Please note that this project is released with a Contributor Code of
+Conduct. By participating in this project you agree to abide by its
+terms.
 
