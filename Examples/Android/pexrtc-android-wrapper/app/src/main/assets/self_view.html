@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>Self View</title>
+    <script type='text/javascript'>
+    var video;
+
+    window.onload = function()
+    {
+        video = document.getElementById("video");
+        video.src = location.search.substring(1);
+    }
+
+    function loadVideo(url) {
+        video.src=url;
+    }
+    </script>
+</head>
+
+<body style="width: 100%; height: 100%; margin: 0;">
+<video style="object-fit: cover; overflow: hidden; width: 100%; height: 100%;" muted id="video" autoplay="autoplay"/>
+</body>
+</html>

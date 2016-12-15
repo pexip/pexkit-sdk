@@ -1,0 +1,44 @@
+diff --git a/webrtc/sdk/objc/Framework/Classes/avfoundationvideocapturer.mm b/webrtc/sdk/objc/Framework/Classes/avfoundationvideocapturer.mm
+index 49b5681..dcafaec 100644
+--- a/webrtc/sdk/objc/Framework/Classes/avfoundationvideocapturer.mm
++++ b/webrtc/sdk/objc/Framework/Classes/avfoundationvideocapturer.mm
+@@ -622,27 +622,38 @@ - (AVCaptureDeviceInput *)backCameraInput {
+ // Called from capture session queue.
+ - (void)updateOrientation {
+ #if TARGET_OS_IPHONE
++AVCaptureConnection *connection =
++    [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
++  AVCaptureVideoOrientation orientation = AVCaptureVideoOrientationPortrait;
+   switch ([UIDevice currentDevice].orientation) {
+     case UIDeviceOrientationPortrait:
++      orientation = AVCaptureVideoOrientationPortrait;
+       _rotation = webrtc::kVideoRotation_90;
+       break;
+     case UIDeviceOrientationPortraitUpsideDown:
++      orientation = AVCaptureVideoOrientationPortraitUpsideDown;
+       _rotation = webrtc::kVideoRotation_270;
+       break;
+     case UIDeviceOrientationLandscapeLeft:
++      orientation = _capturer->GetUseBackCamera() ? AVCaptureVideoOrientationLandscapeLeft
++                                                : AVCaptureVideoOrientationLandscapeRight;
+       _rotation = _capturer->GetUseBackCamera() ? webrtc::kVideoRotation_0
+                                                 : webrtc::kVideoRotation_180;
+       break;
+     case UIDeviceOrientationLandscapeRight:
++      orientation = _capturer->GetUseBackCamera() ? AVCaptureVideoOrientationLandscapeRight
++                                              : AVCaptureVideoOrientationLandscapeLeft;
+       _rotation = _capturer->GetUseBackCamera() ? webrtc::kVideoRotation_180
+                                                 : webrtc::kVideoRotation_0;
+       break;
+     case UIDeviceOrientationFaceUp:
+     case UIDeviceOrientationFaceDown:
+     case UIDeviceOrientationUnknown:
+-      // Ignore.
++    orientation = connection.videoOrientation;
+       break;
+   }
++_rotation = webrtc::kVideoRotation_0;
++connection.videoOrientation = orientation;
+ #endif
+ }
+ 
