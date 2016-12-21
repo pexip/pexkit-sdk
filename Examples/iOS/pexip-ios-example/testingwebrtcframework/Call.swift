@@ -60,10 +60,7 @@ class Call: NSObject, RTCPeerConnectionDelegate {
                 "OfferToReceiveAudio" : "true",
                 "OfferToReceiveVideo" : self.videoEnabled ? "true" : "false"
             ],
-            // remove this
-            optionalConstraints: [
-                "DtlsSrtpKeyAgreement": "true"
-            ]
+            optionalConstraints: [:]
         )
 
         // Empty set of constraints if we want them, will set the WebRTC library
@@ -80,9 +77,9 @@ class Call: NSObject, RTCPeerConnectionDelegate {
 
         if self.videoEnabled {
             print("Call adding video")
-            // set your outbound "resolution" constraints here
-            let mandatory = ["minWidth":"\(self.resolution!.width())", "maxWidth":"\(self.resolution!.width())"]
-            let constraints = RTCMediaConstraints.init(mandatoryConstraints: mandatory, optionalConstraints: [:])
+            // set your outbound "resolution" constraints here e.g. minWidth and maxWidth settings for outbound resolution
+            // let mandatory = ["minWidth":"192"]
+            let constraints = RTCMediaConstraints.init(mandatoryConstraints: [:], optionalConstraints: [:])
             let videoSource = self.factory?.avFoundationVideoSource(with: constraints)
             self.videoTrack = self.factory?.videoTrack(with: videoSource!, trackId: "PEXIPv0")
             self.mediaStream?.addVideoTrack(self.videoTrack!)
@@ -138,6 +135,8 @@ class Call: NSObject, RTCPeerConnectionDelegate {
         if stream.audioTracks.count > 0 {
             print("Got audio track")
             self.audioTrack = stream.audioTracks[0]
+            // at this point you should be able to route media to different audio
+            // outputs - see docs.
         }
     }
 
