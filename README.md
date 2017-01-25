@@ -19,7 +19,7 @@ The documentation and examples provided here serve as a good starting
 point for for building your native application against the Pexip
 client API's.  The guide walks you through the basic concepts of the
 client API, building dependencies such as WebRTC libraries and also
-examples of other tasks required to build a succssful native
+examples of other tasks required to build a successful native
 application.  This document is a living document and will be updated
 to reflect changes in the development of the client API but it is not
 intended to be a complete step-by-step guide on building an
@@ -33,6 +33,14 @@ your needs.
 
 The definitive Client API reference is always on
 [https://docs.pexip.com/](https://docs.pexip.com/)
+
+# Github Issues
+
+We are no longer tracking issues on this site as the support of the
+Client API's are covered under the standard Pexip support agreement.
+
+If there are errors with the client API, please reach out to your
+support contact at Pexip via apisupport@pexip.com
 
 # Code of Conduct
 
