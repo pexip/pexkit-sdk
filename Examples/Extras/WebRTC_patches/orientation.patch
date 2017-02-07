@@ -19,14 +19,12 @@ index 49b5681..dcafaec 100644
        _rotation = webrtc::kVideoRotation_270;
        break;
      case UIDeviceOrientationLandscapeLeft:
-+      orientation = _capturer->GetUseBackCamera() ? AVCaptureVideoOrientationLandscapeLeft
-+                                                : AVCaptureVideoOrientationLandscapeRight;
++       orientation = AVCaptureVideoOrientationLandscapeRight;                                                                       
        _rotation = _capturer->GetUseBackCamera() ? webrtc::kVideoRotation_0
                                                  : webrtc::kVideoRotation_180;
        break;
      case UIDeviceOrientationLandscapeRight:
-+      orientation = _capturer->GetUseBackCamera() ? AVCaptureVideoOrientationLandscapeRight
-+                                              : AVCaptureVideoOrientationLandscapeLeft;
++		orientation =  AVCaptureVideoOrientationLandscapeLeft;                                      
        _rotation = _capturer->GetUseBackCamera() ? webrtc::kVideoRotation_180
                                                  : webrtc::kVideoRotation_0;
        break;
