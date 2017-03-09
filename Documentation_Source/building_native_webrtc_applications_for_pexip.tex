@@ -1,8 +1,8 @@
-% Created 2016-12-21 Wed 10:52
+% Created 2017-03-09 Thu 16:18
+% Intended LaTeX compiler: pdflatex
 \documentclass[a4paper,11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{fixltx2e}
 \usepackage{graphicx}
 \usepackage{grffile}
 \usepackage{longtable}
@@ -52,7 +52,7 @@
  pdftitle={Building native WebRTC applicationsls against Pexip client API},
  pdfkeywords={},
  pdfsubject={},
- pdfcreator={Emacs 25.1.1 (Org mode 8.3.6)}, 
+ pdfcreator={Emacs 25.1.1 (Org mode 9.0.4)}, 
  pdflang={English}}
 \begin{document}
 
@@ -62,7 +62,7 @@
 \clearpage
 
 \section{Introduction}
-\label{sec:orgheadline4}
+\label{sec:orgc51bdba}
 
 In the following article, we'll be covering the steps required to
 build a complete working WebRTC based video and chat application using
@@ -70,7 +70,7 @@ the Pexip client REST API and native builds of WebRTC for both
 Android and iOS platforms.
 
 \subsection{Who this guide is for}
-\label{sec:orgheadline1}
+\label{sec:orgb49f273}
 
 This guide is intended for developers of iOS or Android applications
 that want to create a custom work flow around the powerful video
@@ -83,28 +83,28 @@ building and compiling applications from a command line.
 
 This guide will not cover general application design or user
 experience but there are some recommendations in Sections
-\ref{orgtarget1} and \ref{orgtarget2}
+\ref{orge4d2f65} and \ref{orga2d90cc}
 
 \subsection{Background reading}
-\label{sec:orgheadline2}
+\label{sec:orga37ff65}
 
 The examples here assume you are familiar with the basic operation of
 the Pexip REST API for clients as documented here
-\url{https://docs.pexip.com/api_client/api_rest.htm} You should also be
+\url{https://docs.pexip.com/api\_client/api\_rest.htm} You should also be
 familiar the basic concepts of WebRTC as outlined here
 \url{https://webrtc.org/faq/} Along with this you should also be familiar
 with the basic concepts of the Pexip platform here
-\url{https://docs.pexip.com/admin/admin_intro.htm} and the services offered
-by the platform here \url{https://docs.pexip.com/admin/admin_services.htm}
+\url{https://docs.pexip.com/admin/admin\_intro.htm} and the services offered
+by the platform here \url{https://docs.pexip.com/admin/admin\_services.htm}
 
 \subsection{A word on security}
-\label{sec:orgheadline3}
+\label{sec:org63e361e}
 
 As there is potentially sensitive information traveling over the
 client API, all client connections are performed over an HTTPS
 connection.  Valid certificates should be installed for your platform
 (see
-\url{https://docs.pexip.com/admin/certificate_management.htm?#overview}) and
+\url{https://docs.pexip.com/admin/certificate\_management.htm?\#overview}) and
 you should not use self signed certificates or make attempts to bypass
 any OS level checks (e.g. Application Transport Security on the iOS
 platform).  As you are in complete control of each HTTPS connection
@@ -118,7 +118,7 @@ or tokens to ensure your application does not compromise the users
 security in any way.
 
 \section{An introduction to the call flow}
-\label{sec:orgheadline32}
+\label{sec:orgf69c0b4}
 
 The following sequence diagrams outline the high level call flow
 involved in setting up a connection to the Pexip service.  The
@@ -127,10 +127,10 @@ Pexip worker node in your deployment.  Worker nodes are normally
 discovered using DNS SRV for a specific domain.
 
 Full documentation of the client API can be found here
-\url{https://docs.pexip.com/api_client/api_rest.htm}
+\url{https://docs.pexip.com/api\_client/api\_rest.htm}
 
 \subsection{Getting access to the conference}
-\label{sec:orgheadline10}
+\label{sec:org6078f59}
 
 This call flow shows just the basic API participant flow.  An API
 participant has no media associated with it but is a fully fledged
@@ -151,18 +151,16 @@ e.g. a reverse proxy for load balancing you may need to deal with HTTP
 authentication challenges and or SSL certificate challenges.
 
 Documentation for the client control requests can be found here
-\url{https://docs.pexip.com/api_client/api_rest.htm#client_summary}
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#client\_summary}
 
 To discover the service via DNS SRV (see
-\url{https://docs.pexip.com/admin/dns_records.htm#connect} for setup
+\url{https://docs.pexip.com/admin/dns\_records.htm\#connect} for setup
 details), you should take the conference URI from the user in the form
 of \texttt{conference@domain.org} and extract the domain and conference
 parts.  Perform a look up for \texttt{\_pexapp.\_tcp.domain.org} to see if
 there are any SRV records available for \texttt{domain.org}.  If there are
 none, you should just use the domains A record entry.  See Section
-\ref{orgtarget3} for details on sample DNS SRV implementations.
-
-\includegraphics[width=.9\linewidth]{images/request_token_sequence.png}
+\ref{org5032cb9} for details on sample DNS SRV implementations.
 
 Once finished with your connection, you must perform the
 \texttt{release\_token} request so the MCU can clear down any resources taken
@@ -171,13 +169,13 @@ release your token, the MCU will maintain the participant in the
 roster list until the token expires.
 
 \subsubsection{Requesting a token}
-\label{sec:orgheadline5}
+\label{sec:org5c623a7}
 
-\label{orgtarget4}
+\label{org82b17a1}
 
 The token request is the very first contact you make with the client
 API and determines all further actions.  See
-\url{https://docs.pexip.com/api_client/api_rest.htm#request_token} for full
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#request\_token} for full
 details.  You will need to make sure that any services (VMRs, Gateway rules)
 configured on your deployment have aliases that match what you are
 dialing or you will receive a not found response.  The
@@ -188,7 +186,7 @@ conferences} and \textbf{Virtual Receptions} section of the above
 \texttt{request\_token} documentation.
 
 \subsubsection{Understanding your token}
-\label{sec:orgheadline6}
+\label{sec:orgb474208}
 
 The token provides a large amount of information about the service you
 are connecting to.  The response to a successful \texttt{request\_token}
@@ -200,44 +198,44 @@ do in a conference and your \texttt{service\_type} as this determines what
 type of conference you are in or if you are in a waiting room.
 
 \subsubsection{Subscribing to the event stream}
-\label{sec:orgheadline7}
+\label{sec:orga5e9630}
 
 Once you have a token you must subscribe to the event stream in order
 to receive further updates about the conference.  See
-\url{https://docs.pexip.com/api_client/api_rest.htm#server_sent}.  Once
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#server\_sent}.  Once
 subscribed, you will receive an initial burst of events detailed in
-Section \ref{orgtarget5}.  You can use your own implementation of the
+Section \ref{org5c84b16}.  You can use your own implementation of the
 W3C SSE spec (\url{https://www.w3.org/TR/2011/WD-eventsource-20111020/}) or
 use a readily available off-the-shelf version - see Section
-\ref{orgtarget6} for examples.
+\ref{org89c5bf9} for examples.
 
 \subsubsection{Refreshing a token}
-\label{sec:orgheadline8}
+\label{sec:org551f642}
 
 The \texttt{expires} field of the original \texttt{request\_token} in Section
-\ref{orgtarget4} will give you a time in seconds before the token
+\ref{org82b17a1} will give you a time in seconds before the token
 expires.  We recommend refreshing your token at an interval of
 \texttt{expires/2} seconds.  See
-\url{https://docs.pexip.com/api_client/api_rest.htm#refresh_token} for full
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#refresh\_token} for full
 information.
 
 \subsubsection{Releasing a token}
-\label{sec:orgheadline9}
+\label{sec:orgbced0e2}
 
 This will disconnect you from the conference and clear any resources
 used by your participant.  See
-\url{https://docs.pexip.com/api_client/api_rest.htm#release_token}
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#release\_token}
 
 \subsection{Initial SSE flow when first connecting}
-\label{sec:orgheadline11}
+\label{sec:org8e33d8b}
 
-\label{orgtarget5}
+\label{org5c84b16}
 
 When you first connect the event source, the MCU will send you a set
 of events so you can correctly display the initial list of
 participants in the roster and prepare yourself.  The full list of events
 can be seen here
-\url{https://docs.pexip.com/api_client/api_rest.htm#server_summary}
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#server\_summary}
 
 The initial participant sync is useful for creating the roster list of
 participants in your application and only happens on connection.
@@ -245,19 +243,17 @@ Stage updates show you who is currently "on the stage" i.e. visible in
 the main window.  You can find out who is talking by looking at the
 information in the participant update messages.
 
-\includegraphics[width=.9\linewidth]{images/initial_sse_sequence.png}
-
 \subsection{Dealing with subsequent SSEs}
-\label{sec:orgheadline12}
+\label{sec:org81383f1}
 
 A full list of SSEs located here
-\url{https://docs.pexip.com/api_client/api_rest.htm#server_summary} and
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#server\_summary} and
 should be dealt with accordingly e.g. on a \texttt{participant\_create}
 message, you should add a participant into the roster and potentially
 display this information to the user.
 
 \subsection{Sending and receiving presentations}
-\label{sec:orgheadline15}
+\label{sec:orgd9026f5}
 
 There are two methods for sending / receiving presentations.  The
 first is to respond to a \texttt{presentation\_started} and
@@ -272,45 +268,37 @@ presentation is shown here but there is documentation for the REST
 calls required if you wish to do this.
 
 \subsubsection{Receiving a presentation}
-\label{sec:orgheadline13}
+\label{sec:org906c019}
 
 This example flow shows the reception of a presentation using images
 from the MCU.  See
-\url{https://docs.pexip.com/api_client/api_rest.htm#presentation_start} for
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#presentation\_start} for
 more information
 
-\includegraphics[width=.9\linewidth]{images/presentation_jpeg_rx_sequence.png}
-
 \subsubsection{Sending a presentation}
-\label{sec:orgheadline14}
+\label{sec:org055a82d}
 
 This example flow shows the flow for presenting images from a client
 device into the conference.
 
-\includegraphics[width=.9\linewidth]{images/presentation_jpeg_tx_sequence.png}
-
 \subsection{Sending and receiving chat messages}
-\label{sec:orgheadline18}
+\label{sec:orgf2fe624}
 
 Chat messages are broadcast to the entire conference.  There is no
 one-to-one or private chat.
 
 \subsubsection{Sending chat messages}
-\label{sec:orgheadline16}
+\label{sec:orgc3004a6}
 
-See \url{https://docs.pexip.com/api_client/api_rest.htm#message}
-
-\includegraphics[width=.9\linewidth]{images/chat_tx_sequence.png}
+See \url{https://docs.pexip.com/api\_client/api\_rest.htm\#message}
 
 \subsubsection{Receiving chat messages}
-\label{sec:orgheadline17}
+\label{sec:org4e37fd6}
 
-See \url{https://docs.pexip.com/api_client/api_rest.htm#message_event}
-
-\includegraphics[width=.9\linewidth]{images/chat_rx_sequence.png}
+See \url{https://docs.pexip.com/api\_client/api\_rest.htm\#message\_event}
 
 \subsection{Establishing Media}
-\label{sec:orgheadline31}
+\label{sec:org371f7f1}
 
 Once connected to the conference as an API participant you can then
 escalate media.  Media escalation can be audio only or a full
@@ -323,15 +311,13 @@ other using ICE negotiation.  It is here where you can set things like
 bandwidth of the call and video resolution.
 
 \subsubsection{High level call flow}
-\label{sec:orgheadline19}
-
-\includegraphics[width=.9\linewidth]{images/media_flow_sequence.png}
+\label{sec:org8ca8d36}
 
 The generation of SDP and ICE candidates is handled for you by the
 WebRTC library and is explained below.
 
 \subsubsection{Initializing the RTCPeerConnection}
-\label{sec:orgheadline20}
+\label{sec:org8d9af48}
 
 The \texttt{RTCPeerConnection} object is the main interface to the WebRTC
 library and is created using a factory.  First, we must first
@@ -344,20 +330,22 @@ First we need an \texttt{RTCBundlePolicy} set with \texttt{maxCompat} so as not 
 bundle all media over a single port and we'll also need to fill in any
 ICE server configuration at this point e.g. if your TURN/ICE servers
 need any authentication setup (see
-\url{https://docs.pexip.com/admin/about_turn_server.htm} for more
+\url{https://docs.pexip.com/admin/about\_turn\_server.htm} for more
 information)
 We can then set our media constraints to show if we're offering video
 or audio or both and also set the \texttt{DtlsSrtpKeyAgreement} to true.
 Once we have those, we can pass them into the factory to produce our
 RTCPeerConnection object.  For iOS, this could look like:
 
+\begin{center}
 \includegraphics[width=.9\linewidth]{./images/peer_connection.png}
+\end{center}
 
 
 \subsubsection{Building media streams from tracks}
-\label{sec:orgheadline21}
+\label{sec:orgc7449c0}
 
-\label{orgtarget7}
+\label{org08f246d}
 
 Once we have our \texttt{RTCPeerConnectionFactory}, we can also use it to
 create our media streams and assign our audio and video tracks to
@@ -365,10 +353,12 @@ them.  For iOS we'll be using \texttt{AVFoundation} sources and using the
 \texttt{avFoundationVideoSource}, \texttt{videoTrack} and \texttt{audioTrack} methods of
 the \texttt{RTCPeerConnectionFactory}.  For iOS, this could look like:
 
+\begin{center}
 \includegraphics[width=.9\linewidth]{./images/add_tracks.png}
+\end{center}
 
 \subsubsection{Creating the offer with ICE candidates}
-\label{sec:orgheadline22}
+\label{sec:orgfa99b14}
 
 Creating the offer using the \texttt{RTCPeerConnection} object will trigger a
 bunch of calls that must be handled by your delegate in particular:
@@ -380,10 +370,12 @@ bunch of calls that must be handled by your delegate in particular:
 As this is what will return the final SDP back up to the application
 so we can POST it to the MCU as our offer.  For iOS this could look like:
 
+\begin{center}
 \includegraphics[width=.9\linewidth]{./images/peer_conn_offer.png}
+\end{center}
 
 \subsubsection{Mangling the SDP to set bandwidths and resolutions}
-\label{sec:orgheadline23}
+\label{sec:org5cbf104}
 
 Before we POST the SDP to the MCU we must manipulate our SDP to set
 the supported bandwidth and resolutions for the call e.g. make this a
@@ -400,17 +392,19 @@ need to set the \texttt{AS} and \texttt{TIAS} setting for the total session
 bandwidth and the RTC constraints for capture device to set the out bound
 resolutions (\texttt{minWidth}).  For iOS, this could look like:
 
+\begin{center}
 \includegraphics[width=.9\linewidth]{./images/sdp_mutation_functions.png}
+\end{center}
 
 \subsubsection{Sending the SDP offer}
-\label{sec:orgheadline24}
+\label{sec:org6291cff}
 
 Once we have a complete offer with all candidates and we have
 manipulated the SDP to what we want we can now POST this to the MCU.  
-See \url{https://docs.pexip.com/api_client/api_rest.htm#calls}
+See \url{https://docs.pexip.com/api\_client/api\_rest.htm\#calls}
 
 \subsubsection{Receiving the SDP answer}
-\label{sec:orgheadline25}
+\label{sec:org7e13dac}
 
 Once the MCU has calculated an answer for for our offer, it will send
 back its response and we can then manipulate this further e.g. to
@@ -418,10 +412,12 @@ limit the out bound bandwidth from our device and then pass this into
 our \texttt{RTCPeerConnection} objects \texttt{remoteDescription}. For iOS, this
 could look like:
 
+\begin{center}
 \includegraphics[width=.9\linewidth]{./images/remote_sdp.png}
+\end{center}
 
 \subsubsection{Connecting streams}
-\label{sec:orgheadline26}
+\label{sec:org7eab4e2}
 
 Once our \texttt{RTCPeerConnection} objects \texttt{remoteDescription} has been set
 and accepted you can now connect up the incoming streams to your views
@@ -435,51 +431,54 @@ In this event, you can pick out the audio and video streams and attach
 them to your \texttt{RTCEAGLView} renderers i.e. the views you have setup to
 show video in your app.  For iOS, this could look like:
 
+\begin{center}
 \includegraphics[width=.9\linewidth]{./images/add_stream.png}
+\end{center}
 
 \subsubsection{Starting media flow}
-\label{sec:orgheadline27}
+\label{sec:orga154fee}
 
 Once the offer/answer dance has completed and you have wired up your
 streams, you can know trigger the MCU into sending media by sending an
-\texttt{ack} message: See \url{https://docs.pexip.com/api_client/api_rest.htm#ack}.
+\texttt{ack} message: See \url{https://docs.pexip.com/api\_client/api\_rest.htm\#ack}.
 Once this completes, you should start to see and hear media in your
 application.
 
 \subsubsection{Switching streams}
-\label{sec:orgheadline28}
+\label{sec:org19ec535}
 
 You can switch tracks in the media stream to allow you to do things
-like swapping between front and rear cameras.
-You can do this by selecting the source (e.g. for iOS, selecting an
-\texttt{AVFoundation} source with the correct \texttt{AVCaptureDevicePosition}),
-removing the old media stream, and then re-adding the new media stream
-created from your new tracks as in Section \ref{orgtarget7}
+like swapping between front and rear cameras.  You can do this using
+\texttt{useBackCamera} on the \texttt{RTCAVFoundationVideoSource} e.g.:
+
+\begin{center}
+\includegraphics[width=.9\linewidth]{./images/toggle_camera.png}
+\end{center}
 
 \subsubsection{Crossing the streams}
-\label{sec:orgheadline29}
+\label{sec:orgaf146f8}
 
 Never cross the streams, it would be bad.
 
 \subsubsection{Disconnecting media flow}
-\label{sec:orgheadline30}
+\label{sec:orgfc2560e}
 
 Once you have finished you can disconnect the media and drop back down
 to an API participant.  See
-\url{https://docs.pexip.com/api_client/api_rest.htm#call_disconnect}
+\url{https://docs.pexip.com/api\_client/api\_rest.htm\#call\_disconnect}
 
 \section{Platform Specific Considerations}
-\label{sec:orgheadline38}
+\label{sec:orgb3cfb24}
 \subsection{iOS}
-\label{sec:orgheadline36}
+\label{sec:org98ea06c}
 \subsubsection{WebRTC binaries}
-\label{sec:orgheadline33}
+\label{sec:org06d8d11}
 
 At the time of writing, there is no native support for WebRTC in the
 safari view controller so the only way to work with WebRTC is via a
 binary install of the WebRTC library and rendering the results
 using RTCEAGLViews in your UI.  You will need to build the WebRTC
-library yourself (see Section \ref{orgtarget8} ) and then include the
+library yourself (see Section \ref{org7558b4b} ) and then include the
 header files in your project.  If you are using Swift, make sure that
 a bridging header is in place to expose the bindings.  All examples
 for this document will use Swift but the concepts transfer directly
@@ -493,13 +492,13 @@ Store, you \textbf{must} remove these non-ARM architectures from the
 library or your app will be rejected.
 
 \subsubsection{Bitcode}
-\label{sec:orgheadline34}
+\label{sec:orgb0f2682}
 
 At the time of writing, there is also no support for Bitcode in the
 library so you will need to disable this for your project.
 
 \subsubsection{Hardware Acceleration}
-\label{sec:orgheadline35}
+\label{sec:orgc9474ae}
 
 Hardware acceleration is enabled by default for the latest builds of
 WebRTC and this should dramatically reduce the CPU load used when
@@ -516,29 +515,29 @@ MPEG-4 Part 2, and H.263.  The A7 added support for H.264’s
 profile 110.
 
 \subsection{Android}
-\label{sec:orgheadline37}
+\label{sec:orgc7c126a}
 
 For Android, there are actually two ways you can interact with WebRTC;
 a web view with built in support for WebRTC that can be accessed via
 JavaScript bindings; or using the same method as iOS with a WebRTC
 library and a pure Java implementation.  See Sections
-\ref{orgtarget9} and \ref{orgtarget2} for more
+\ref{orgddd20c4} and \ref{orga2d90cc} for more
 information.
 
 \section{Building WebRTC}
-\label{sec:orgheadline51}
+\label{sec:org3a78d92}
 
-\label{orgtarget8}
+\label{org7558b4b}
 
 \subsection{Building WebRTC for iOS}
-\label{sec:orgheadline49}
+\label{sec:orga9c6f53}
 \subsubsection{Custom patches for Pexip}
-\label{sec:orgheadline39}
+\label{sec:org69299e0}
 
 At the time of writing, there is a custom patch to workaround support
 for rotation of video streams that must be applied in order for the
 video stream to be rotated to the correct orientation.  See Section
-\ref{orgtarget6} for links to the patches.
+\ref{org89c5bf9} for links to the patches.
 
 The reader is advised to use a "branch head" when building rather than
 master as this is slightly more stable and reliable when building.  At
@@ -555,7 +554,7 @@ control, you can build the static library and only include what you
 need.
 
 \subsubsection{Building}
-\label{sec:orgheadline47}
+\label{sec:org6db1acd}
 
 Building WebRTC for iOS must be performed on a Mac - these examples
 were performed on a Macbook Pro running macOS 10.12.1.  The canonical
@@ -564,10 +563,10 @@ following process is a good summary.
 
 \begin{enumerate}
 \item Prerequisites
-\label{sec:orgheadline42}
+\label{sec:org6aeca14}
 \begin{enumerate}
 \item depot tools
-\label{sec:orgheadline40}
+\label{sec:orgfcb5068}
 
 Clone the depot tools
 
@@ -582,7 +581,7 @@ export PATH=`pwd`/depot_tools:$PATH
 \end{verbatim}
 
 \item WebRTC code
-\label{sec:orgheadline41}
+\label{sec:org7cf5cac}
 
 Create a working directory, enter it and fetch the code:
 
@@ -602,15 +601,15 @@ gclient sync
 \end{enumerate}
 
 \item Building
-\label{sec:orgheadline43}
-\label{orgtarget10} Once you have the source (and have applied any
+\label{sec:org4613ee4}
+\label{orgb90e33c} Once you have the source (and have applied any
 necessary patches) you can either build a static binary or a
 framework.  Building a framework is the simpler option but the static
 binary gives you more control.
 
 
 \item Building the framework
-\label{sec:orgheadline44}
+\label{sec:org1750310}
 
 \begin{verbatim}
 cd ~/webrtc/src
@@ -627,7 +626,7 @@ framework called \texttt{WebRTC.framework}.  You can now embed this directly
 into you project.
 
 \item Building the static Binary
-\label{sec:orgheadline46}
+\label{sec:org7438bc4}
 
 \begin{verbatim}
 cd ~/webrtc/src
@@ -662,7 +661,7 @@ ninja -C out/arm rtc_sdk_framework_objc
 
 \begin{enumerate}
 \item Adding WebRTC and headers to your Swift project
-\label{sec:orgheadline45}
+\label{sec:org9e17891}
 
 \begin{enumerate}
 \item Create a new group in your project hierarchy called WebRTC and
@@ -670,7 +669,7 @@ create a new header file called \texttt{<bundle id>-Bridging-Header.h}
 \item Copy in the binary lib and headers created in the build process above.
 \item Add the import lines to the bridging header
 \begin{enumerate}
-\item You can run the following command from the headers directory from Section \ref{orgtarget10} to
+\item You can run the following command from the headers directory from Section \ref{orgb90e33c} to
 get a listing ready to paste in:
 \begin{verbatim}
 ls *h | awk '{print "#import \"" $NF "\""}'
@@ -702,7 +701,7 @@ in the following order:
 \end{enumerate}
 \end{enumerate}
 \subsubsection{Other settings}
-\label{sec:orgheadline48}
+\label{sec:org8017736}
 
 \begin{itemize}
 \item Make sure the \texttt{Build Settings -> Other linker flags} is set to
@@ -711,12 +710,12 @@ in the following order:
 \end{itemize}
 
 \subsection{Building WebRTC for Android}
-\label{sec:orgheadline50}
+\label{sec:org953b2bc}
 
-\label{orgtarget9}
+\label{orgddd20c4}
 
 First, please take into account the design considerations mentioned in
-Section \ref{orgtarget2} as this will determine if you
+Section \ref{orga2d90cc} as this will determine if you
 even need to compile WebRTC for Android.
 
 The canonical build instructions are here
@@ -726,8 +725,8 @@ moved over to the new \texttt{gn} build system.
 
 
 \section{Example Code}
-\label{sec:orgheadline71}
-\label{orgtarget6}
+\label{sec:org1d029f8}
+\label{org89c5bf9}
 
 The example code is intended as a rudimentary guide to show you the
 basic concepts for working with the API and it \textbf{should not be used as
@@ -743,7 +742,7 @@ or Google (\url{https://developer.android.com/design/index.html})
 The example code can be found in \url{https://github.com/pexip/pexkit-sdk}.
 
 \subsection{License}
-\label{sec:orgheadline52}
+\label{sec:orgd269c8e}
 
 All examples and code are released under the MIT license:
 
@@ -773,10 +772,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 \end{verbatim}
 
 \subsection{iOS}
-\label{sec:orgheadline58}
+\label{sec:org0a534bf}
 \subsubsection{Design Considerations}
-\label{sec:orgheadline53}
-\label{orgtarget1}
+\label{sec:org2b367de}
+\label{orge4d2f65}
 It's a good idea to encapsulate the Conference functionality
 (e.g. token handling, event handling, chat, presentation and call
 handling) into a single class and the Call functionality (dealing with
@@ -784,29 +783,31 @@ WebRTC) in another class.  You can also setup structures for important
 pieces of information e.g. resolutions, service errors etc
 
 \subsubsection{DNS SRV}
-\label{sec:orgheadline54}
-\label{orgtarget3}
+\label{sec:org2910bd6}
+\label{org5032cb9}
 We have provided an example DNS SRV code snippet that you may include
 in your projects if you prefer not to implement your own.
 
 \subsubsection{SSE}
-\label{sec:orgheadline55}
+\label{sec:org6446cfc}
 A good example of an SSE implementation is
 \url{https://github.com/inaka/EventSource}.  We have successfully used this
 to connect to the Pexip SSE stream.
 
 \subsubsection{Audio Routing}
-\label{sec:orgheadline56}
+\label{sec:org1eb172f}
 By default, audio will be routed to the earpiece on the phone.  You
 can override this using the \texttt{AVAudioSession} as below (\texttt{.Speaker} is
 just an Enum for clarity)
 
+\begin{center}
 \includegraphics[width=.9\linewidth]{./images/audio_routing_swift.png}
+\end{center}
 
 You should modify this once the audio track has been established.
 
 \subsubsection{Selfview}
-\label{sec:orgheadline57}
+\label{sec:org2a87206}
 If you wish to display a self view (i.e. the local video track), you
 can hook up another \texttt{RTCEAGLVideoView} to the video track as follows:
 
@@ -818,12 +819,12 @@ This should be added in the initialisation of the call where you
 create media streams.
 
 \subsection{Android}
-\label{sec:orgheadline69}
+\label{sec:org9dfbfce}
 
 \subsubsection{Design Considerations}
-\label{sec:orgheadline61}
+\label{sec:orgb0704a5}
 
-\label{orgtarget2}
+\label{orga2d90cc}
 
 As WebRTC is implemented in the Chrome web view for the Android
 platform, there are a couple of options open to you when working with
@@ -836,7 +837,7 @@ Level of 21 or above.
 
 \begin{enumerate}
 \item To bundle PexRTC.js or not
-\label{sec:orgheadline59}
+\label{sec:org319e19d}
 
 In order to use PexRTC.js you can either bundle the JavaScript with the wrapper project or fetch the JavaScript from your running deployment.
 
@@ -849,14 +850,14 @@ The supplied wrapper already includes a bundled version of PexRTC, you
 may need to update this every time you publish your app.
 
 \item Building the wrapper
-\label{sec:orgheadline60}
+\label{sec:orgff7cd5f}
 
 Simply open the supplied project and build it.  This will produce an
 AAR file (in \texttt{pexrtc-android-wrapper/app/build/outputs/aar})
 \end{enumerate}
 
 \subsubsection{PexRTC wrapper}
-\label{sec:orgheadline67}
+\label{sec:org97e9792}
 
 Import the wrapper library into your project using "File --> New -->
 New Module" and select "import JAR/AAR package" from the selection.
@@ -877,7 +878,7 @@ adding it to your layout.xml file).
 
 \begin{enumerate}
 \item fragments vs normal view destruction
-\label{sec:orgheadline62}
+\label{sec:org4e0427c}
 
 For configuration changes e.g. rotation, there are two methods of
 dealing with the view destruction: use fragments or disable view
@@ -904,7 +905,7 @@ e.g.
 \end{verbatim}
 
 \item pro grammatic addition of PexView
-\label{sec:orgheadline63}
+\label{sec:orgcbbd3a9}
 
 In your \texttt{onCreate} method of your main activity:
 
@@ -930,7 +931,7 @@ pexView.setSelfView(selfView);
 \end{verbatim}
 
 \item addition via layout.xml
-\label{sec:orgheadline64}
+\label{sec:orgb2e9345}
 
 Using the design view, add a custom view (search for PexView) and add
 it where you see fit and then link them to your main activity e.g.
@@ -942,34 +943,34 @@ pexView.setSelfView(selfView);
 \end{verbatim}
 
 \item setting up callbacks for events
-\label{sec:orgheadline65}
+\label{sec:org1876b39}
 
 Once you have your views setup, you can now register the callbacks for
 the events from PexRTC e.g.
 
 \begin{verbatim}
 pexView.setEvent("onSetup", pexView.new PexEvent() {
-        @Override
-        public void onEvent(String[] strings) {
-            pexView.setSelfViewVideo(strings[0]);
-            pexView.evaluateFunction("connect");
-        }
+	@Override
+	public void onEvent(String[] strings) {
+	    pexView.setSelfViewVideo(strings[0]);
+	    pexView.evaluateFunction("connect");
+	}
     });
 
 pexView.setEvent("onConnect", pexView.new PexEvent() {
-        @Override
-        public void onEvent(String[] strings) {
-            if (strings.length > 0 && strings[0] != null)
-                pexView.setVideo(strings[0]);
-        }
+	@Override
+	public void onEvent(String[] strings) {
+	    if (strings.length > 0 && strings[0] != null)
+		pexView.setVideo(strings[0]);
+	}
     });
 
 pexView.addPageLoadedCallback(pexView.new PexCallback() {
-        @Override
-        public void callback(String args) {
-            // make a call
-            pexView.evaluateFunction("makeCall", "pexipdemo.com", "meet.vmr", "My Display Name", "576");
-        }
+	@Override
+	public void callback(String args) {
+	    // make a call
+	    pexView.evaluateFunction("makeCall", "pexipdemo.com", "meet.vmr", "My Display Name", "576");
+	}
     });
 
 // Load the page which will then trigger the callbacks
@@ -977,7 +978,7 @@ pexView.load();
 \end{verbatim}
 
 \item adding permissions to the android manifest
-\label{sec:orgheadline66}
+\label{sec:orgd2d2187}
 
 You'll need the following permissions in your manifest file:
 
@@ -990,12 +991,12 @@ You'll need the following permissions in your manifest file:
 \end{enumerate}
 
 \subsubsection{Native}
-\label{sec:orgheadline68}
+\label{sec:org3089b9e}
 
 Follow iOS instructions if you wish to go the native route.
 
 \subsection{Cordova}
-\label{sec:orgheadline70}
+\label{sec:org3609769}
 
 We have created a fork of the official Cordova plugin to work with the
 latest WebRTC.  Access to these plugins will be made available at a

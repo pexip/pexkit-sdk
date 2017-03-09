@@ -496,11 +496,10 @@ application.
 *** Switching streams
 
 You can switch tracks in the media stream to allow you to do things
-like swapping between front and rear cameras.
-You can do this by selecting the source (e.g. for iOS, selecting an
-~AVFoundation~ source with the correct ~AVCaptureDevicePosition~),
-removing the old media stream, and then re-adding the new media stream
-created from your new tracks as in Section [[sec:buildingMediaStreams]]
+like swapping between front and rear cameras.  You can do this using
+~useBackCamera~ on the ~RTCAVFoundationVideoSource~ e.g.:
+
+[[./images/toggle_camera.png]]
 
 *** Crossing the streams
 
