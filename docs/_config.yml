@@ -2,3 +2,4 @@ title: pexkit-sdk
 description: This is the public repository for Pexip code samples to integrate with existing API’s
 authors: Ian Mortimer
 url: https://pexip.github.io/pexkit-sdk/
+theme: jekyll-theme-cayman
