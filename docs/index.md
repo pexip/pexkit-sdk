@@ -1,8 +1,10 @@
 ---
 layout: default
-name: pexkit-sdk
-headline: pexkit-sdk headline,
+name: pexip-app-development
+headline: Pexip App Development
 ---
 
-# pexkit-sdk
+# Pexip App Development
+
+
 
