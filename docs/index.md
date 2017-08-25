@@ -44,6 +44,8 @@ the command line.
 The examples shown here can be developed on any platform but you will
 need an Apple Mac if you want to deploy to an iOS device.
 
+If you're going to try and build a native app, you'll need a good grasp of Swift or Java and how to use the appropriate IDE (XCode or Android Studio).
+
 We won't be covering how to make your application look amazing or
 be [accessible](https://www.w3.org/WAI/mobile/) to all users - that's
 up to you.
@@ -52,6 +54,7 @@ We also suggest you keep the following links to hand for reference:
 
  - [Pexip Administration Introduction](https://docs.pexip.com/admin/admin_intro.htm)
  - [Pexip Client REST API Documentation](https://docs.pexip.com/api_client/api_rest.htm)
+ - [PexRTC Documentation](https://docs.pexip.com/api_client/api_pexrtc.htm)
  - [Pexip Services Guide](https://docs.pexip.com/admin/admin_services.htm)
  - [WebRTC FAQ](https://webrtc.org/faq/)
 

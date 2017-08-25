@@ -13,7 +13,7 @@ If you're building for Android, make sure you have Android Studio installed and 
 
 At the time of writing, we're using cordova version 7.0.1 for these demos.
 
-We'll be pulling in `pexrtc.js` directly from our deployment here.  You might want to consider bundling PexRTC with your app.  You should also have read the discussion around DNS in the [basic concepts](basic_concepts) section.
+We'll be pulling in `pexrtc.js` directly from our deployment here.  You might want to consider bundling PexRTC with your app.  You should also have read the discussion around DNS in the [basic concepts](basic_concepts) section.  It's also useful to read up on [PexRTC](https://docs.pexip.com/api_client/api_pexrtc.htm) to see what it can do for you.
 
 ## Building for Android
 
