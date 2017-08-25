@@ -42,6 +42,11 @@ involved in setting up a connection to the Pexip service.  The
 Pexip worker node in your deployment.  Worker nodes are normally
 discovered using DNS SRV for a specific domain.</p>
 
+<p>If you’re using PexRTC in a Cordova app, most of these details will be
+hidden away from you but it’s very useful to have a proper
+understanding of what’s going on under the covers to help you debug.
+If you’re implementing a native app, this is essential.</p>
+
 <h2 id="gettingaccess">Getting Access to the Conference</h2>
 
 <p>This call flow shows just the basic API participant flow.  An API
@@ -73,13 +78,92 @@ conference parts.  Perform a look up for <code class="highlighter-rouge">_pexapp
 see if there are any SRV records available for <code class="highlighter-rouge">domain.org</code>.  If there
 are none, you should just use the domains <code class="highlighter-rouge">A</code> record entry.</p>
 
-<p><img src="images/request_token_sequence.png" alt="request token sequence" /></p>
+<p><img src="images/request_token_sequence.png" style="display:block;margin:auto" alt="request token sequence" /></p>
 
 <p>Once finished with your connection, you must perform the
 <code class="highlighter-rouge">release_token</code> request so the MCU can clear down any resources taken
 by your client and potentially end the conference.  If you do not
 release your token, the MCU will maintain the participant in the
 roster list until the token expires.</p>
+
+<h3 id="requesting-a-token">Requesting a token</h3>
+
+<p>The token request is the very first contact you make with the client
+API and determines all further actions.  See
+<a href="https://docs.pexip.com/api_client/api_rest.htm#request_token">request_token</a> for full
+details.  You will need to make sure that any services (VMRs, Gateway rules)
+configured on your deployment have aliases that match what you are
+dialing or you will receive a not found response.  The
+<code class="highlighter-rouge">request_token</code> exchange is also where you will deal with any PINs
+that may have been configured on the services or supply conference
+extensions for Virtual Reception Rooms.  See the <em>PIN protected
+conferences</em> and <em>Virtual Receptions</em> section of the above
+<code class="highlighter-rouge">request_token</code> documentation.</p>
+
+<h3 id="understanding-your-token">Understanding your token</h3>
+
+<p>The token provides a large amount of information about the service you
+are connecting to.  The response to a successful <code class="highlighter-rouge">request_token</code>
+should be parsed out to provide the correct feedback to the user.  At
+a minimum you should store the <code class="highlighter-rouge">token</code> string to use in headers for
+all subsequent requests, the <code class="highlighter-rouge">participant_uuid</code> as this is needed in later
+operations, your <code class="highlighter-rouge">role</code> as this will determine what you can and can’t
+do in a conference and your <code class="highlighter-rouge">service_type</code> as this determines what
+type of conference you are in or if you are in a waiting room.</p>
+
+<h3 id="subscribing-to-the-event-stream">Subscribing to the event stream</h3>
+
+<p>Once you have a token you must subscribe to the event stream in order
+to receive further updates about the conference.  See
+<a href="https://docs.pexip.com/api_client/api_rest.htm#server_sent">SSE</a> docs.  Once
+subscribed, you will receive an initial burst of events.  You can use your own implementation of the
+W3C <a href="https://www.w3.org/TR/2011/WD-eventsource-20111020/">SSE spec</a> or
+use a readily available off-the-shelf version.</p>
+
+<h4 id="initial-sse-flow-when-first-connecting">Initial SSE flow when first connecting</h4>
+
+<p>When you first connect the event source, the MCU will send you a set
+of events so you can correctly display the initial list of
+participants in the roster and prepare yourself.  The full list of events
+can be seen
+<a href="https://docs.pexip.com/api_client/api_rest.htm#server_summary">here</a></p>
+
+<p>The initial participant sync is useful for creating the roster list of
+participants in your application and only happens on connection.
+Stage updates show you who is currently “on the stage” i.e. visible in
+the main window.  You can find out who is talking by looking at the
+information in the participant update messages.</p>
+
+<p><img src="images/initial_sse_sequence.png" style="display:block;margin:auto" alt="initial sse flow" /></p>
+
+<h4 id="dealing-with-subsequent-sses">Dealing with subsequent SSEs</h4>
+
+<p>A full list of SSEs located <a href="https://docs.pexip.com/api_client/api_rest.htm#server_summary">here</a> and
+should be dealt with accordingly e.g. on a <code class="highlighter-rouge">participant_create</code>
+message, you should add a participant into the roster and potentially
+display this information to the user.</p>
+
+<h3 id="refreshing-a-token">Refreshing a token</h3>
+
+<p>The <code class="highlighter-rouge">expires</code> field of the original <code class="highlighter-rouge">request_token</code> will give you a
+time in seconds before the token expires.  We recommend refreshing
+your token at an interval of <code class="highlighter-rouge">expires/2</code> seconds.
+See
+<a href="https://docs.pexip.com/api_client/api_rest.htm#refresh_token">refresh token</a> docs
+for full information.</p>
+
+<h3 id="releasing-a-token">Releasing a token</h3>
+
+<p>This will disconnect you from the conference and clear any resources
+used by your participant.  See
+<a href="https://docs.pexip.com/api_client/api_rest.htm#release_token">release token</a> docs for full details.</p>
+
+<h1 id="great-now-what-">Great, now what ?</h1>
+
+<p>Once you are an API participant, you can now perform other functions
+like sending chat messages, sending and receiving presentations and
+starting audio/video.  The following sections detail all of that
+for you.  Head back <a href="index#start">home</a> to carry on.</p>
 
 
       <footer class="site-footer">

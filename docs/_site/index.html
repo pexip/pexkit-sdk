@@ -57,6 +57,12 @@ Android device.  We’ll also give a brief introduction to the client
 API and cover some basic concepts you’ll need when using the Pexip
 platform from a client perspective.</p>
 
+<p>We’ll also include a section on building native apps.  This will
+primarily cover the use of the WebRTC binaries for iOS as this is the
+most difficult part of getting something working natively.  Android
+has support for WebRTC in it’s webview whilst Safari (at the time of
+writing) does not.</p>
+
 <h2 id="before-we-start">Before we start</h2>
 
 <p>We’ll be developing our application using Cordova so you’ll need a
@@ -70,8 +76,9 @@ the command line.</p>
 <p>The examples shown here can be developed on any platform but you will
 need an Apple Mac if you want to deploy to an iOS device.</p>
 
-<p>We won’t be covering how to make your application look amazing or be
-<a href="https://www.w3.org/WAI/mobile/">accessible</a> to all users - that’s up to you.</p>
+<p>We won’t be covering how to make your application look amazing or
+be <a href="https://www.w3.org/WAI/mobile/">accessible</a> to all users - that’s
+up to you.</p>
 
 <p>We also suggest you keep the following links to hand for reference:</p>
 
@@ -86,11 +93,32 @@ need an Apple Mac if you want to deploy to an iOS device.</p>
 
 <p>You haven’t got one yet?  No worries - sign up for a <strong><a href="https://www.pexip.com/testdrive">free test drive</a></strong> and give it a go.</p>
 
-<h2 id="here-we-go">Here we go</h2>
+<h2 id="start">Here we go</h2>
 
 <ul>
-  <li><a href="basic_concepts">Basic Concepts</a></li>
-  <li></li>
+  <li><a href="basic_concepts">Basic Concepts</a> - requesting tokens, event streams etc</li>
+  <li><a href="presentations">Presentations</a> - sending and receiving presentations</li>
+  <li><a href="messaging">Messaging</a> - sending and receiving chat messages</li>
+  <li><a href="media">Audio and Video</a> - starting audio and video</li>
+</ul>
+
+<h3 id="building-your-cordova-app">Building your Cordova app</h3>
+
+<ul>
+  <li><a href="cordova_initial_setup">Initial Setup</a> - getting the build environment sorted</li>
+</ul>
+
+<h3 id="building-a-native-app-for-ios">Building a native app for iOS</h3>
+
+<ul>
+  <li><a href="building_webrtc">Building the WebRTC binary</a></li>
+  <li><a href="ios_media">Establishing Media</a></li>
+</ul>
+
+<h3 id="building-a-native-app-for-android">Building a native app for Android</h3>
+
+<ul>
+  <li><a href="pexrtc_wrapper">Setting up the PexRTC wrapper</a></li>
 </ul>
 
 

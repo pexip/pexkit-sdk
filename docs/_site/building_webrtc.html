@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.2.3 -->
+<title>Building WebRTC | Pexip App Development</title>
+<meta property="og:title" content="Building WebRTC" />
+<meta name="author" content="Ian Mortimer" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Develop cross platform apps for use against Pexip API’s" />
+<meta property="og:description" content="Develop cross platform apps for use against Pexip API’s" />
+<link rel="canonical" href="http://localhost:4000/building_webrtc.html" />
+<meta property="og:url" content="http://localhost:4000/building_webrtc.html" />
+<meta property="og:site_name" content="Pexip App Development" />
+<script type="application/ld+json">
+{"@context":"http://schema.org","@type":"WebPage","headline":"Building WebRTC","author":{"@type":"Person","name":"Ian Mortimer"},"description":"Develop cross platform apps for use against Pexip API’s","url":"http://localhost:4000/building_webrtc.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="description" content="Develop cross platform apps for use against Pexip API's"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/assets/css/style.css?v=1fcea85641477abad4fee7d9608dc6322d77719b">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Pexip App Development</h1>
+      <h2 class="project-tagline">Develop cross platform apps for use against Pexip API's</h2>
+      
+        <a href="http://github.com/pexip/pexkit-sdk" class="btn">View on GitHub</a>
+      
+      
+    </section>
+
+    <section class="main-content">
+      <h1 id="building-webrtc">Building WebRTC</h1>
+
+<p>At the time of writing, there is no native support for WebRTC in the
+safari view controller so the only way to work with WebRTC is via a
+binary install of the WebRTC library and rendering the results using
+RTCEAGLViews in your UI.  You will need to build the WebRTC library
+yourself and then include the header files (or framework) in your
+project.  If you are using Swift, make sure that a bridging header is
+in place to expose the bindings.  All examples for this document will
+use Swift but the concepts transfer directly for Objective-C based
+applications.</p>
+
+<p>The library can be compiled with the full instruction set for use on
+all ARM platforms and also with 386 and X86_64 instructions for use in
+the simulator.  You can control which platforms to target and hence
+control the size of the included library.  When submitting to the App
+Store, you <em>must</em> remove these non-ARM architectures from the
+library or your app will be rejected.</p>
+
+<h2 id="bitcode-support">Bitcode support</h2>
+
+<p>At the time of writing, there is also no support for Bitcode in the
+library so you will need to disable this for your project.</p>
+
+<h2 id="hardware-acceleration">Hardware Acceleration</h2>
+
+<p>Hardware acceleration is enabled by default for the latest builds of
+WebRTC and this should dramatically reduce the CPU load used when
+decoding H264 streams but be aware that decoding video and audio is
+still a very intensive workload and consideration should be taken when
+deciding bandwidths and resolutions to negotiate with the MCU i.e. a
+2Mbps stream at 720p HD resolution will require a modern ARM processor
+and a lot of CPU power and older phones will struggle to decode this
+in a timely manner.</p>
+
+<p>On iOS devices with an A4 up to A6 processor, there is support for
+H.264/AVC/MPEG-4 Part 10 (until profile 100 and up to level 5.1),
+MPEG-4 Part 2, and H.263.  The A7 added support for H.264’s
+profile 110.</p>
+
+<h2 id="custom-patches-for-pexip">Custom patches for Pexip</h2>
+
+<p>At the time of writing, there is a custom patch to workaround support
+for rotation of video streams that must be applied in order for the
+video stream to be rotated to the correct orientation.  See <a href="https://github.com/pexip/pexkit-sdk/tree/master/Examples/Extras/WebRTC_patches">patches</a> here</p>
+
+<p>The reader is advised to use a “branch head” when building rather than
+master as this is slightly more stable and reliable when building.  At
+the time of writing, branch head 56 was used.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>git checkout branch-heads/56
+glclient sync
+</code></pre>
+</div>
+
+<p>We recommend building the framework as this greatly simplifies
+addition to your project although if you want more fine grained
+control, you can build the static library and only include what you
+need.</p>
+
+<h2 id="building">Building</h2>
+
+<p>Building WebRTC for iOS must be performed on a Mac - these examples
+were performed on a Macbook Pro running macOS 10.12.1.  The canonical
+build instructions are <a href="https://webrtc.org/native-code/ios/">here</a> but the
+following process is a good summary.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<h4 id="depot-tools">depot tools</h4>
+
+<p>Clone the depot tools</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+</code></pre>
+</div>
+
+<p>Make sure they are in your path:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>export PATH=`pwd`/depot_tools:$PATH
+</code></pre>
+</div>
+
+<h4 id="webrtc-code">WebRTC code</h4>
+
+<p>Create a working directory, enter it and fetch the code:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir ~/webrtc
+cd ~/webrtc
+fetch —nohooks webrtc_ios
+</code></pre>
+</div>
+
+<p>Now sync and pull down the code.  This will take a long time and
+should not be interrupted as multiple gigabytes of data will be
+downloaded.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>gclient sync
+</code></pre>
+</div>
+
+<h3 id="building-1">Building</h3>
+<p>Once you have the source (and have applied any necessary patches) you
+can either build a static binary or a framework.  Building a framework
+is the simpler option but the static binary gives you more control.</p>
+
+<h4 id="building-the-framework">Building the framework</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd ~/webrtc/src
+</code></pre>
+</div>
+
+<p>Build the framework:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>./webrtc/build/ios/build_ios_libs.sh
+</code></pre>
+</div>
+
+<p>The result will be a directory called <code class="highlighter-rouge">out_ios_libs</code> containing the
+framework called <code class="highlighter-rouge">WebRTC.framework</code>.  You can now embed this directly
+into you project.</p>
+
+<h4 id="building-the-static-binary">Building the static Binary</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd ~/webrtc/src
+</code></pre>
+</div>
+
+<p>Build the static binary:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>./webrtc/build/ios/build_ios_libs.sh -b static_only -o out
+</code></pre>
+</div>
+
+<p>The result will be a library and a set of headers in the <code class="highlighter-rouge">out</code>
+directory.</p>
+
+<p>The <code class="highlighter-rouge">out</code> directory will contain a single <code class="highlighter-rouge">librtc_sdk_objc.a</code> with all
+architectures combined and sub directories containing the individual
+architectures.  The header files will be located in
+<code class="highlighter-rouge">./webrtc/sdk/objc/Framework/Headers/WebRTC/</code></p>
+
+<p>If the build script fails you can run the compilation manually:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>gn gen out/arm64 --args='target_os="ios" target_cpu="arm64" \
+is_component_build=false is_debug=false’
+gn gen out/arm --args='target_os="ios" target_cpu="arm" \ 
+is_component_build=false is_debug=false’
+
+ninja -C out/arm64 rtc_sdk_framework_objc
+ninja -C out/arm rtc_sdk_framework_objc
+</code></pre>
+</div>
+
+<h5 id="adding-webrtc-and-headers-to-your-swift-project">Adding WebRTC and headers to your Swift project</h5>
+
+<ol>
+  <li>Create a new group in your project hierarchy called WebRTC and
+create a new header file called ~<bundle>-Bridging-Header.h~</bundle></li>
+  <li>Copy in the binary lib and headers created in the build process above.</li>
+  <li>Add the import lines to the bridging header
+    <ol>
+      <li>
+        <p>You can run the following command from the headers directory to
+get a listing ready to paste in:</p>
+
+        <p><code>ls *h | awk '{print "#import \"" $NF "\""}'</code></p>
+
+        <p>You won’t need all of these headers and the macOS ones can be
+removed.</p>
+      </li>
+    </ol>
+  </li>
+  <li>Make sure <code class="highlighter-rouge">Build Settings -&gt; Objective-C Bridging Header</code> has a
+path set to the new bridging header you created</li>
+  <li>Include all the other frameworks and libraries required for proper
+operation including your freshly built <code class="highlighter-rouge">librtc_sdk_objc</code> library,
+in the following order:
+    <ul>
+      <li>libresolv.tbd</li>
+      <li>AVFoundation.framework</li>
+      <li>CoreMedia.framework</li>
+      <li>GLKit.framework</li>
+      <li>OpenGLES.framework</li>
+      <li>CoreVideo.framework</li>
+      <li>CoreAudio.framework</li>
+      <li>QuartzCore.framework</li>
+      <li>AudioToolbox.framework</li>
+      <li>libc++.tbd</li>
+      <li>libstdc++.tbd</li>
+      <li>VideoToolbox.framework</li>
+      <li>librtc_sdk_objc.a</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="other-settings">Other settings</h4>
+
+<ul>
+  <li>Make sure the <code class="highlighter-rouge">Build Settings -&gt; Other linker flags</code> is set to
+<code class="highlighter-rouge">-ObjC</code> or you’ll get weird crashes about unknown signatures.</li>
+  <li>turn off bit-code support in <code class="highlighter-rouge">Build Settings</code></li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="http://github.com/pexip/pexkit-sdk">pexkit-sdk</a> is maintained by <a href="http://github.com/pexip">pexip</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </section>
+
+    
+  </body>
+</html>

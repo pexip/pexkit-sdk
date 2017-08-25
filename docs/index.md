@@ -25,6 +25,12 @@ Android device.  We'll also give a brief introduction to the client
 API and cover some basic concepts you'll need when using the Pexip
 platform from a client perspective.
 
+We'll also include a section on building native apps.  This will
+primarily cover the use of the WebRTC binaries for iOS as this is the
+most difficult part of getting something working natively.  Android
+has support for WebRTC in it's webview whilst Safari (at the time of
+writing) does not.
+
 ## Before we start
 
 We'll be developing our application using Cordova so you'll need a
@@ -38,8 +44,9 @@ the command line.
 The examples shown here can be developed on any platform but you will
 need an Apple Mac if you want to deploy to an iOS device.
 
-We won't be covering how to make your application look amazing or be
-[accessible](https://www.w3.org/WAI/mobile/) to all users - that's up to you.
+We won't be covering how to make your application look amazing or
+be [accessible](https://www.w3.org/WAI/mobile/) to all users - that's
+up to you.
 
 We also suggest you keep the following links to hand for reference:
 
@@ -52,7 +59,22 @@ Oh, it's also super useful if you have a Pexip deployment to work against.
 
 You haven't got one yet?  No worries - sign up for a **[free test drive](https://www.pexip.com/testdrive)** and give it a go.
 
-## Here we go
+## Here we go {#start}
 
- - [Basic Concepts](basic_concepts)
- - 
+ - [Basic Concepts](basic_concepts) - requesting tokens, event streams etc
+ - [Presentations](presentations) - sending and receiving presentations
+ - [Messaging](messaging) - sending and receiving chat messages
+ - [Audio and Video](media) - starting audio and video
+ 
+### Building your Cordova app
+
+ - [Initial Setup](cordova_initial_setup) - getting the build environment sorted
+
+### Building a native app for iOS
+
+ - [Building the WebRTC binary](building_webrtc)
+ - [Establishing Media](ios_media)
+
+### Building a native app for Android
+
+ - [Setting up the PexRTC wrapper](pexrtc_wrapper)
