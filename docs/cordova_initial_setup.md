@@ -312,9 +312,17 @@ You'll also need to change the bridging header to point to the right one
 from:
 
 	$(PROJECT_DIR)/$(PROJECT_NAME)/Bridging-Header.h
-		$(PROJECT_DIR)/$(PROJECT_NAME)/Plugins/cordova-plugin-iosrtc/cordova-plugin-iosrtc-Bridging-Header.h
+	
+to
+
+	$(PROJECT_DIR)/$(PROJECT_NAME)/Plugins/cordova-plugin-iosrtc/cordova-plugin-iosrtc-Bridging-Header.h
 		
 You can now run the app from the XCode.
 
+At this point you should have a basic audio/video call up and running on both platforms from a single code base - congratulations !
+
+The following sections will add more functionality to the apps (coming soon !)
+
+There is a `tar.gz` bundle of this sample code on github in the [Examples](https://github.com/pexip/pexkit-sdk/tree/master/Examples) section.
 
 
