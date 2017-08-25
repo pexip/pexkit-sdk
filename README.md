@@ -15,21 +15,9 @@ rebrand our existing clients.
 
 # Examples and Documentation
 
-The documentation and examples provided here serve as a good starting
-point for for building your native application against the Pexip
-client API's.  The guide walks you through the basic concepts of the
-client API, building dependencies such as WebRTC libraries and also
-examples of other tasks required to build a successful native
-application.  This document is a living document and will be updated
-to reflect changes in the development of the client API but it is not
-intended to be a complete step-by-step guide on building an
-application nor a definitive reference for the client API, instead, it
-should serve as a guide to the core concepts of the client API and the
-principals involved to give you the confidence required to fully
-explore the client API and make the most suitable app possible for
-your needs.
-
-[The guide](https://github.com/pexip/pexkit-sdk/tree/master/building_native_webrtc_applications_for_pexip.pdf)
+We have a **new site** for all examples and documentation -
+see <https://pexip.github.io/pexkit-sdk/>.  It will be updated
+regularly.
 
 The definitive Client API reference is always on
 [https://docs.pexip.com/](https://docs.pexip.com/)
