@@ -1,5 +1,8 @@
 title: Pexip App Development
 description: Develop cross platform apps for use against Pexip API's
-authors: Ian Mortimer
+author:
+  name: Ian Mortimer
+  email: ian@pexip.com
 url: https://pexip.github.io/pexkit-sdk/
 theme: jekyll-theme-cayman
+markdown: kramdown
