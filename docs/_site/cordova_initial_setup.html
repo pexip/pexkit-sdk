@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.2.3 -->
+<title>Cordova initial setup | Pexip App Development</title>
+<meta property="og:title" content="Cordova initial setup" />
+<meta name="author" content="Ian Mortimer" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Develop cross platform apps for use against Pexip API’s" />
+<meta property="og:description" content="Develop cross platform apps for use against Pexip API’s" />
+<link rel="canonical" href="http://localhost:4000/cordova_initial_setup.html" />
+<meta property="og:url" content="http://localhost:4000/cordova_initial_setup.html" />
+<meta property="og:site_name" content="Pexip App Development" />
+<script type="application/ld+json">
+{"@context":"http://schema.org","@type":"WebPage","headline":"Cordova initial setup","author":{"@type":"Person","name":"Ian Mortimer"},"description":"Develop cross platform apps for use against Pexip API’s","url":"http://localhost:4000/cordova_initial_setup.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="description" content="Develop cross platform apps for use against Pexip API's"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/assets/css/style.css?v=1fcea85641477abad4fee7d9608dc6322d77719b">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Pexip App Development</h1>
+      <h2 class="project-tagline">Develop cross platform apps for use against Pexip API's</h2>
+      
+        <a href="http://github.com/pexip/pexkit-sdk" class="btn">View on GitHub</a>
+      
+      
+    </section>
+
+    <section class="main-content">
+      <h1 id="cordova-initial-setup">Cordova initial setup</h1>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>You’ll need the following installed on your development platform (your platform package manager should be able to install these for you e.g. <code class="highlighter-rouge">homebrew</code> on mac or <code class="highlighter-rouge">apt</code> on Debian style systems.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">cordova</code></li>
+  <li><code class="highlighter-rouge">npm</code> and <code class="highlighter-rouge">nodejs</code></li>
+</ul>
+
+<p>If you’re building for Android, make sure you have Android Studio installed and all of the required SDK’s for your deployment platform (and your <code class="highlighter-rouge">ANDROID_HOME</code> variable is set).  If you’re building for iOS make sure you have XCode installed along with the command line tools for xcode (<code class="highlighter-rouge">xcode-select --install</code>)</p>
+
+<p>At the time of writing, we’re using cordova version 7.0.1 for these demos.</p>
+
+<p>We’ll be pulling in <code class="highlighter-rouge">pexrtc.js</code> directly from our deployment here.  You might want to consider bundling PexRTC with your app.  You should also have read the discussion around DNS in the <a href="basic_concepts">basic concepts</a> section.  It’s also useful to read up on <a href="https://docs.pexip.com/api_client/api_pexrtc.htm">PexRTC</a> to see what it can do for you.</p>
+
+<h2 id="building-for-android">Building for Android</h2>
+
+<p>Create your app and add the platform:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cordova create cordovademo com.pexip.cordovademo DemoApp
+
+cordova platform add android
+</code></pre>
+</div>
+
+<p>Modify <code class="highlighter-rouge">config.xml</code> to add in the following to the android platform section:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;config-file mode="merge" parent="/*" target="AndroidManifest.xml"&gt;
+&lt;uses-permission android:name="android.permission.CAMERA"/&gt;
+&lt;uses-permission android:name="android.permission.RECORD_AUDIO"/&gt;
+&lt;uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/&gt;
+&lt;uses-permission android:name="android.permission.INTERNET"/&gt;
+
+&lt;uses-feature android:name="android.hardware.camera" android:required="true"/&gt;
+&lt;uses-feature android:name="android.hardware.camera.autofocus" android:required="true"/&gt;
+&lt;/config-file&gt;
+</code></pre>
+</div>
+
+<p>You’ll also need to add the following plugins to get the permissions
+working for newer android releases:</p>
+
+<p>The following plugin makes sure the permissions end up in the android manifest file:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cordova plugin add --save cordova-custom-config
+</code></pre>
+</div>
+
+<p>The following plugin sets up the runtime permissions for later
+versions of android (6.0/Marshmallow onwards)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cordova plugin add --save cordova-plugin-android-permissions
+</code></pre>
+</div>
+
+<p>You’ll also need to add the XML namespace tag for android to the
+<code class="highlighter-rouge">widget</code> element of the config file:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>xmlns:android="http://schemas.android.com/apk/res/android"
+</code></pre>
+</div>
+
+<p>At this point you should be able to run a <code class="highlighter-rouge">cordova build</code> and see a
+successful run.</p>
+
+<p>Taking the stock <code class="highlighter-rouge">index.html</code> as a starter template, let’s modify it
+to create our basic app structure:</p>
+
+<p>edit <code class="highlighter-rouge">index.html</code> to add minimal bits:</p>
+
+<p>You might need to remove the meta tag to allow loading properly</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"&gt;
+</code></pre>
+</div>
+
+<p>Link to <code class="highlighter-rouge">pexrtc.js</code> from your Pexip deployment:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;script type="text/javascript" src="https://mydeployment.com/static/webrtc/js/pexrtc.js"&gt;&lt;/script&gt;
+</code></pre>
+</div>
+
+<p>Add in structure of page with video tag (remove the <code class="highlighter-rouge">style.css</code> for the moment)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;div width='100%' height='100%' style='overflow:auto' id="viewport"&gt;
+  &lt;video width="100%"
+	 id="video"
+	 autoplay="autoplay"
+	 poster="https://mydeployment.com/static/webrtc/img/spinner.gif"/&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+
+<p>Add some basic input fields:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;form id="inputFields"&gt;
+  &lt;fieldset&gt;
+    URI: &lt;input type="text" id="uriField" /&gt;
+    &lt;br&gt;
+    PIN: &lt;input type="text" id="userPin" /&gt;
+    &lt;br&gt;
+    &lt;button type="button" onclick="app.connect();return false"&gt;DIAL&lt;/button&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;
+</code></pre>
+</div>
+
+<p>And somewhere to show a roster list:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;div id="rosterContainer"&gt;
+  &lt;ul id="rosterList"&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+
+<p>Now we can add in the basic parts of the JS in the default cordova template <code class="highlighter-rouge">js/index.js</code></p>
+
+<p>declare everything we need:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var rtc;
+var bandwidth;
+var pin;
+var video;
+var conference;
+var node;
+var permissions;
+</code></pre>
+</div>
+
+<p>In <code class="highlighter-rouge">onDeviceReady</code> handler, let’s setup a few things like requesting
+permissions, getting the video element, setting a bandwidth, add some
+handlers for the PexRTC callbacks.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// get rid of this 
+// this.receivedEvent('deviceready');
+permissions = cordova.plugins.permissions;
+permissions.requestPermission(permissions.CAMERA, success, error);
+permissions.requestPermission(permissions.RECORD_AUDIO, success, error);
+
+video = document.getElementById("video");
+bandwidth = '384';
+
+rtc = new PexRTC();
+console.log('RTC is ', rtc);
+video = document.getElementById('video');
+
+window.addEventListener('beforeunload', finalise);
+
+rtc.onSetup = doneSetup;
+console.log('doneSetup is a:', doneSetup);
+rtc.onConnect = connected;
+rtc.onError = remoteDisconnect;
+rtc.onDisconnect = remoteDisconnect;
+rtc.onParticipantCreate = participantCreate;
+rtc.onParticipantDelete = participantDelete;
+</code></pre>
+</div>
+
+<p>create a connect function to handle the click from the button:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>connect: function() {
+	console.log('Connecting....');
+	conference = document.getElementById('uriField').value.split('@')[0]
+	node =  document.getElementById('uriField').value.split('@')[1]
+	pin =  document.getElementById('userPin').value
+	rtc.makeCall(node, conference, 'Ethel', bandwidth);
+	// don't refresh the page here
+	return false
+},
+</code></pre>
+</div>
+
+<p>Now after the <code class="highlighter-rouge">app.initialize();</code> we create the handler methods:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function doneSetup(videoURL, pin_status) {
+	console.log('doneSetup with pin_status and pin: ', pin_status, pin);
+	rtc.connect(pin)
+}
+
+function connected(videoURL) {
+	console.log('connected');
+	video.poster = "";
+	video.src = videoURL
+}
+
+function remoteDisconnect() {
+	console.log('remote disconnect');
+}
+
+function finalise() {
+	console.log('finalise');
+	rtc.disconnect();
+	video.src = "";
+}
+
+function error() {
+  console.warn('Missing permissions');
+}
+
+function success( status ) {
+  if( !status.hasPermission ) error();
+}
+
+function participantCreate(participant) {
+	console.log('participant created: ', participant);
+	var newParticipant = document.createElement('li')
+	newParticipant.id = participant.uuid;
+	newParticipant.appendChild(document.createTextNode(participant.display_name));
+	document.getElementById('rosterList').appendChild(newParticipant);
+}
+
+function participantDelete(participant) {
+	console.log('participant deleted: ', participant);
+	var toRemove = document.getElementById(participant.uuid);
+	document.getElementById('rosterList').removeChild(toRemove);
+}
+</code></pre>
+</div>
+
+<p>At this point, you should be able to join a conference and see/hear
+stuff and also see participants in the roster list.</p>
+
+<h3 id="adding-selfview">Adding selfview.</h3>
+
+<p>Simply add another video element and hook it up to the right stream:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;div id="fieldsAndSelfView" style="width:100%;"&gt;
+  &lt;div id="form" style="float:left;width:59%"&gt;
+    &lt;form id="inputFields"&gt;
+      &lt;fieldset&gt;
+	URI: &lt;input type="text" id="uriField" /&gt;
+	&lt;br&gt;
+	PIN: &lt;input type="text" id="userPin" /&gt;
+	&lt;br&gt;
+	&lt;button type="button" onclick="app.connect();return false"&gt;DIAL&lt;/button&gt;
+      &lt;/fieldset&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  &lt;div id="selfviewcontainer" style="float:left;width:30%;border:1px solid black"&gt;
+    &lt;video id="selfView" width="100%" autoplay="autoplay" /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+
+<p>Now fill it with the video by modifying the <code class="highlighter-rouge">doneSetup</code> callback</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function doneSetup(videoURL, pin_status) {
+	console.log('doneSetup with pin_status and pin: ', pin_status, pin);
+	document.getElementById('selfView').src = videoURL;
+	rtc.connect(pin)
+}
+</code></pre>
+</div>
+
+<h2 id="adding-support-for-ios">Adding support for iOS</h2>
+
+<p>Continuing on from above, we’ll now use an off-the-shelf RTC plugin that has the WebRTC binary already built for us.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cordova platform add ios
+cordova plugin add --save cordova-plugin-iosrtc
+</code></pre>
+</div>
+
+<p>Setup the hook (from the repo)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;hook src="hooks/iosrtc-swift-support.js" type="before_build" /&gt;
+</code></pre>
+</div>
+
+<p>You will also need another hook to setup the permissions for iOS in the <code class="highlighter-rouge">Info.plist</code>.  We’re using PlistBuddy to do the work for us here so create a shell script that looks like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nv">PLIST</span><span class="o">=</span>platforms/ios/<span class="k">*</span>/<span class="k">*</span>-Info.plist
+
+cat <span class="sh">&lt;&lt; EOF |
+Delete :NSCameraUsageDescription
+Add :NSCameraUsageDescription string "We need you camera to show video"
+Delete :NSMicrophoneUsageDescription
+Add :NSMicrophoneUsageDescription string "We need you microphone to hear you"
+EOF
+</span><span class="k">while </span><span class="nb">read </span>line
+<span class="k">do</span>
+  /usr/libexec/PlistBuddy -c <span class="s2">"</span><span class="nv">$line</span><span class="s2">"</span> <span class="nv">$PLIST</span>
+<span class="k">done
+
+</span><span class="nb">true</span>
+</code></pre>
+</div>
+
+<p>Make sure this file is executable (<code class="highlighter-rouge">chmod +x ios-permissions-hook.sh</code>) and add it to the <code class="highlighter-rouge">config.xml</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;hook src="hooks/ios-permissions-hook.sh" type="before_build" /&gt;
+</code></pre>
+</div>
+
+<p>Add some platform detection to register the globals:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>if (cordova.platformId === 'ios') {
+    cordova.plugins.iosrtc.registerGlobals();
+    console.log('XXX registered globals');
+} else {
+    console.log('XXX android');
+    permissions = cordova.plugins.permissions;
+    permissions.requestPermission(permissions.CAMERA, success, error);
+    permissions.requestPermission(permissions.RECORD_AUDIO, success, error);
+}	
+</code></pre>
+</div>
+
+<p>You will also need to modify the way we load <code class="highlighter-rouge">PexRTX</code> as register
+globals will run after PexRTC has loaded so <code class="highlighter-rouge">window.PexRTC</code> will be
+null at that point and cause problems.  Comment out the static load
+and add this to the device ready</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// get around the null PexRTC if the script is loaded statically
+console.log('Adding pexrtc');
+var pexrtc_script = document.createElement('script');
+pexrtc_script.type = 'text/javascript';
+pexrtc_script.src = 'https://mydeployment.com/static/webrtc/js/pexrtc.js';
+pexrtc_script.onload = function() {
+	rtc = new PexRTC();
+	console.log('RTC is ', rtc);
+	video = document.getElementById('video');
+
+	window.addEventListener('beforeunload', finalise);
+
+	rtc.onSetup = doneSetup;
+	console.log('doneSetup is a:', doneSetup);
+	rtc.onConnect = connected;
+	rtc.onError = remoteDisconnect;
+	rtc.onDisconnect = remoteDisconnect;
+	rtc.onParticipantCreate = participantCreate;
+	rtc.onParticipantDelete = participantDelete;    
+};
+document.head.appendChild(pexrtc_script);
+</code></pre>
+</div>
+
+<p>You’ll then need to build and open up the <code class="highlighter-rouge">xcworkspace</code> file to add a
+team and check for compilation errors.</p>
+
+<p>(might need to get it to run xcode conversion to swift 3 or set the version build setting)</p>
+
+<p>You’ll also need to change the bridging header to point to the right one</p>
+
+<p>from:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$(PROJECT_DIR)/$(PROJECT_NAME)/Bridging-Header.h
+</code></pre>
+</div>
+
+<p>to</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$(PROJECT_DIR)/$(PROJECT_NAME)/Plugins/cordova-plugin-iosrtc/cordova-plugin-iosrtc-Bridging-Header.h
+</code></pre>
+</div>
+
+<p>You can now run the app from the XCode.</p>
+
+<p>At this point you should have a basic audio/video call up and running on both platforms from a single code base - congratulations !</p>
+
+<p>The following sections will add more functionality to the apps (coming soon !)</p>
+
+<p>There is a <code class="highlighter-rouge">tar.gz</code> bundle of this sample code on github in the <a href="https://github.com/pexip/pexkit-sdk/tree/master/Examples">Examples</a> section.</p>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="http://github.com/pexip/pexkit-sdk">pexkit-sdk</a> is maintained by <a href="http://github.com/pexip">pexip</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </section>
+
+    
+  </body>
+</html>
