@@ -68,8 +68,8 @@ You haven't got one yet?  No worries - sign up for a **[free test drive](https:/
  
 ### Building your Cordova app
 
- - [Initial Setup](cordova_initial_setup) - getting the build environment sorted
-
+ - [Basic Setup](cordova_initial_setup) - getting the build environment sorted and a basic call running
+ 
 ### Building a native app for iOS
 
  - [Building the WebRTC binary](building_webrtc)
@@ -78,3 +78,5 @@ You haven't got one yet?  No worries - sign up for a **[free test drive](https:/
 ### Building a native app for Android
 
  - [Setting up the PexRTC wrapper](pexrtc_wrapper)
+
+### Building a desktop app using Electron
