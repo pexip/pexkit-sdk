@@ -348,7 +348,7 @@ EOF
 </code></pre>
 </div>
 
-<p>You will also need to modify the way we load <code class="highlighter-rouge">PexRTX</code> as register
+<p>You will also need to modify the way we load <code class="highlighter-rouge">PexRTC</code> as register
 globals will run after PexRTC has loaded so <code class="highlighter-rouge">window.PexRTC</code> will be
 null at that point and cause problems.  Comment out the static load
 and add this to the device ready</p>

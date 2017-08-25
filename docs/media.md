@@ -14,7 +14,7 @@ bandwidth of the call and video resolution.
 
 If you are using PexRTC in a Cordova app, this negotiation will be handled for you but it is useful to understand what's happening under the covers.  The sections on the RTCPeerConnection are useful when building a native application using the WebRTC libraries directly (e.g. in iOS)
 
-There are specific details on establishing media with the WebRTC libraries for iOS [here](ios_media) and using PexRTC with Cordova [here](cordova_basic_call)
+There are specific details on establishing media with the WebRTC libraries for iOS [here](ios_media) and using PexRTC with Cordova [here](cordova_initial_setup)
 
 ## High level call flow
 

@@ -275,7 +275,7 @@ Add some platform detection to register the globals:
 	    permissions.requestPermission(permissions.RECORD_AUDIO, success, error);
 	}	
 
-You will also need to modify the way we load `PexRTX` as register
+You will also need to modify the way we load `PexRTC` as register
 globals will run after PexRTC has loaded so `window.PexRTC` will be
 null at that point and cause problems.  Comment out the static load
 and add this to the device ready
