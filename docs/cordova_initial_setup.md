@@ -199,7 +199,9 @@ Now after the `app.initialize();` we create the handler methods:
 At this point, you should be able to join a conference and see/hear
 stuff and also see participants in the roster list.
 
-Adding selfview.  add another video element
+### Adding selfview.
+
+Simply add another video element and hook it up to the right stream:
 
 	<div id="fieldsAndSelfView" style="width:100%;">
 	  <div id="form" style="float:left;width:59%">
