@@ -43,7 +43,7 @@ public class PexView extends WebView{
 
 
     private void init() {
-        readyCallbacks = new ArrayList<PexCallback>();
+        readyCallbacks = new ArrayList<>();
         setupWebView(this);
         this.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url)
@@ -170,11 +170,11 @@ public class PexView extends WebView{
         }
     }
 
-    public void setVideo(String url) {
+    public void setVideo(Object url) {
         setVideo(url, null);
     }
 
-    public void setVideo(String url, final PexCallback cb) {
+    public void setVideo(Object url, final PexCallback cb) {
         this.evaluateJavascript("loadVideo('" + url + "')", new ValueCallback<String>() {
             @Override
             public void onReceiveValue(String value) {
@@ -184,24 +184,24 @@ public class PexView extends WebView{
         });
     }
 
-    public void setSelfView(WebView webView) {
-        selfView = webView;
-        setupWebView(webView);
+    public void setPin(String pin, final PexCallback cb) {
+        this.evaluateJavascript("setPin('" + pin + "')", new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String value) {
+                if (cb != null)
+                    cb.runOnUI(null);
+            }
+        });
     }
 
-    public WebView getSelfView() {
-        return selfView;
+    public void showSelfView() {
+        this.evaluateJavascript("showSelfView()", null);
     }
 
-    public WebView setSelfViewVideo(String url) {
-        if (selfView == null) {
-            selfView = new WebView(this.getContext());
-            setupWebView(selfView);
-        }
-
-        selfView.loadUrl("file:///android_asset/self_view.html?" + url);
-        return selfView;
+    public void hideSelfView() {
+        this.evaluateJavascript("hideSelfView()", null);
     }
+
 
     public void fetchPexRTCSource() {
         fetchPexRTCSource(null, null);
@@ -218,7 +218,7 @@ public class PexView extends WebView{
     public void fetchPexRTCSource(String host, final PexEvent cb){
         this.addJavascriptInterface(new PexEvent() {
             @Override
-            public void onEvent(String[] returnValues) {
+            public void onEvent(String [] returnValues) {
                 if (cb != null)
                     cb.runOnUI(null);
 
@@ -246,7 +246,7 @@ public class PexView extends WebView{
 
     public abstract class PexEvent {
 
-        public abstract void onEvent(String[] returnValues);
+        public abstract void onEvent(String[] strings);
 
         @JavascriptInterface
         public void runOnUI(final String[] returnValues) {
@@ -263,6 +263,8 @@ public class PexView extends WebView{
         WebSettings settings = webView.getSettings();
         webView.setBackgroundColor(Color.TRANSPARENT);
         settings.setJavaScriptEnabled(true);
+        settings.setMediaPlaybackRequiresUserGesture(false);
+        settings.setPluginState(WebSettings.PluginState.ON);
         settings.setDomStorageEnabled(true);
         settings.setAllowFileAccessFromFileURLs(true);
         settings.setAllowUniversalAccessFromFileURLs(true);
