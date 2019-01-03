@@ -20,7 +20,7 @@
             android:id="@+id/rightArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/normal_padding"
+            android:padding="@dimen/above_normal_margin"
             android:clickable="true"
             android:layout_alignParentBottom="true"
             android:visibility="visible"
