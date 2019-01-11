@@ -321,8 +321,8 @@ You can now run the app from the XCode.
 
 At this point you should have a basic audio/video call up and running on both platforms from a single code base - congratulations !
 
-The following sections will add more functionality to the apps (coming soon !)
+# Note
 
-There is a `tar.gz` bundle of this sample code on github in the [Examples](https://github.com/pexip/pexkit-sdk/tree/master/Examples) section.
-
-
+Due to the rate of change of various API's and underlying
+technologies, these instructions are best effort and some tweaks may
+need to be made for the latest releases.
