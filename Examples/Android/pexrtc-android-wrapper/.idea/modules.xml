@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pexip/pexip.iml" filepath="$PROJECT_DIR$/pexip/pexip.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pexiptest/pexiptest.iml" filepath="$PROJECT_DIR$/pexiptest/pexiptest.iml" />
       <module fileurl="file://$PROJECT_DIR$/pexrtc-android-wrapper.iml" filepath="$PROJECT_DIR$/pexrtc-android-wrapper.iml" />
     </modules>
   </component>

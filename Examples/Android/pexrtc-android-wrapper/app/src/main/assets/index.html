@@ -1,17 +1,20 @@
 <html>
 <head>
-<title>PexView</title>
-<script type="text/javascript" src="pexrtc.js"></script>
-<script type="text/javascript" src="jsinterface.js"></script>
-<script type='text/javascript'>
+    <title>PexView</title>
+    <script type="text/javascript" src="pexrtc.js"></script>
+    <script type="text/javascript" src="jsinterface.js"></script>
+    <script type='text/javascript'>
 window.onload = function()
 {
-initialise();
+    initialise();
 }
 </script>
 </head>
 
 <body style="width: 100%; height: 100%; margin: 0;">
-    <video style="object-fit: contain; overflow: hidden; width: 100%; height: 100%;" id="video" autoplay="autoplay"/>
+<video style="object-fit: contain; overflow: hidden; width: 100%; height: 100%;" poster="dialing_video_gif.gif" id="video" autoplay="autoplay"></video>
+<video style="position: absolute; top: 0; right: 0; margin-top : 10px ; margin-right : 10px ; object-fit: cover ; overflow: hidden; width: 25%; height: 20%;"
+       muted id="selfVideo" poster = "self_view.gif"
+       autoplay="autoplay"></video>
 </body>
 </html>

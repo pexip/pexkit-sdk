@@ -26,15 +26,7 @@ public class PexViewFragment extends Fragment {
         return pexView;
     }
 
-    public WebView getSelfView() {
-        return selfView;
-    }
-
     public void setPexView(PexView pexView) {
         this.pexView = pexView;
-    }
-
-    public void setSelfView(WebView selfView) {
-        this.selfView = selfView;
     }
 }
